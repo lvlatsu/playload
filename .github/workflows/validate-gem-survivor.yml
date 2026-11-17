@@ -25,6 +25,8 @@ jobs:
         run: |
           npx prettier --write data/examples.json examples/gem-survivor.js
           npm run examples
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
       - name: Run complete project checks
         run: npm run check
       - name: Commit generated and formatted files
