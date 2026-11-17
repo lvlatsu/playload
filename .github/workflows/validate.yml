@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   check:
@@ -18,8 +18,14 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npx prettier examples/gem-survivor.js data/examples.json --write
       - run: npm run examples
-      - run: npx prettier examples/gem-survivor.js data/examples.json --write && cat examples/gem-survivor.js && cat data/examples.json
+      - name: Commit generated formatting
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add examples/gem-survivor.js data/examples.json src/app/examples.js
+          git diff --cached --quiet || (git commit -m "Format GEM SURVIVOR example" && git push)
       - uses: actions/upload-artifact@v4
         with:
           name: generated-examples
