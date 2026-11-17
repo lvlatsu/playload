@@ -9,23 +9,23 @@ let intro=0,goWait=0;
 let mag=100;
 
 // パレットデータ
-let playerPal="0000C000700E38073F00780060000000000000001E06FF1FFF1F0E0600000000";
+const playerPal="0000C000700E38073F00780060000000000000001E06FF1FFF1F0E0600000000";
 
 // パーツ定義
-let playerParts=[
+const playerParts=[
  {x:0,y:0,w:8,h:8,dx:0,dy:0,color:7},
  {x:8,y:0,w:8,h:8,dx:0,dy:0,color:4}
 ];
 
 // パレットからパーツを切り出して登録
 function loadPalette(data,pw,ph,parts){
- let rows=[];
+ const rows=[];
  for(let y=0;y<ph;y++)
   rows.push(data.slice(y*pw/4,(y+1)*pw/4)
    .split("").map(c=>parseInt(c,16).toString(2).padStart(4,"0")).join(""));
 
  let id=0;
- for(let p of parts){
+ for(const p of parts){
   p.chars=[];
   for(let ty=0;ty<p.h;ty+=8){
    for(let tx=0;tx<p.w;tx+=8){
@@ -33,13 +33,13 @@ function loadPalette(data,pw,ph,parts){
     for(let yy=0;yy<8;yy++){
      let row="";
      for(let xx=0;xx<8;xx++){
-      let px=p.x+tx+xx,py=p.y+ty+yy;
+      const px=p.x+tx+xx,py=p.y+ty+yy;
       row+=px<pw&&py<ph&&xx+tx<p.w&&yy+ty<p.h
        ?rows[py][px]:"0";
      }
      pat+=parseInt(row,2).toString(16).padStart(2,"0");
     }
-    let ch=String.fromCharCode(0xE000+id++);
+    const ch=String.fromCharCode(0xE000+id++);
     pcg[ch].pat=pat;
     p.chars.push([ch,tx,ty]);
    }
@@ -49,8 +49,8 @@ function loadPalette(data,pw,ph,parts){
 
 // パーツを画面に描画
 function drawParts(parts,x,y){
- for(let p of parts)
-  for(let c of p.chars)
+ for(const p of parts)
+  for(const c of p.chars)
    spr(x+p.dx+c[1],y+p.dy+c[2],c[0],p.color);
    
 }
@@ -59,14 +59,14 @@ function drawParts(parts,x,y){
 loadPalette(playerPal,16,16,playerParts);
 
 function gem(w=false,t=-1){
- let a=w?(Math.random()*20|0):20;
- let b=2+(Math.random()*14|0);
- if(t<0){let r=Math.random();t=r<0.7?0:r<0.9?1:2;}
+ const a=w?(Math.random()*20|0):20;
+ const b=2+(Math.random()*14|0);
+ if(t<0){const r=Math.random();t=r<0.7?0:r<0.9?1:2;}
  gems.push([a,b,t,w?60:0]);
 }
 
 function enemy(){
- let r=Math.random();
+ const r=Math.random();
  et=r<0.7?0:r<0.9?1:2;
  hp=et===1?20:3;
  es=et===1?50:et===2?20:10;
@@ -82,13 +82,13 @@ function putGameOver(){
 }
 
 function dropGem(){
- let d=held.slice();
+ const d=held.slice();
  held=[0,0,0];
- let n=d[0]+d[1]+d[2],k=0;
- let r=10+Math.sqrt(n)*8;
+ const n=d[0]+d[1]+d[2],k=0;
+ const r=10+Math.sqrt(n)*8;
  for(let t=0;t<3;t++)for(let i=0;i<d[t];i++){
-  let a=k++*6.283/n+(Math.random()-0.5)*0.5;
-  let z=4+Math.random()*r*1.3;
+  const a=k++*6.283/n+(Math.random()-0.5)*0.5;
+  const z=4+Math.random()*r*1.3;
   gems.push([(x+Math.cos(a)*z)/8,(y+Math.sin(a)*z)/8,t,36]);
  }
 }
@@ -142,11 +142,11 @@ function tick(){
  if(inv>0)inv--;
  if(shotWait>0)shotWait--;
 
- let pull=btn(4)&&mag>0;
+ const pull=btn(4)&&mag>0;
  if(pull)mag=Math.max(0,mag-1);
  else if(!btn(4))mag=Math.min(100,mag+0.1);
 
- let speed=0.6+Math.min(held[2],3)*0.2;
+ const speed=0.6+Math.min(held[2],3)*0.2;
  x=Math.max(0,Math.min(152,x+(btn(3)-btn(2))*speed));
  y=Math.max(16,Math.min(120,y+(btn(1)-btn(0))*speed));
 
@@ -154,25 +154,25 @@ function tick(){
  if(ex< -8)enemy();
 
  if(et===2&&ex>=0&&ex<=160&&--fireWait<=0){
-  let dx=x-ex,dy=y-ey,d=Math.sqrt(dx*dx+dy*dy);
+  const dx=x-ex,dy=y-ey,d=Math.sqrt(dx*dx+dy*dy);
   enemyBullets.push([ex,ey,dx/d*1.5,dy/d*1.5]);
   fireWait=60;
  }
 
  for(let i=gems.length-1;i>=0;i--){
-  let g=gems[i];
+  const g=gems[i];
   g[0]-=0.05;
   if(g[3]>0)g[3]--;
   if(pull){
-   let dx=x/8-g[0],dy=y/8-g[1];
-   let d=Math.sqrt(dx*dx+dy*dy);
+   const dx=x/8-g[0],dy=y/8-g[1];
+   const d=Math.sqrt(dx*dx+dy*dy);
    if(d>0){g[0]+=dx/d*0.18;g[1]+=dy/d*0.18;}
   }
   if(g[0]<-1)gems.splice(i,1);
  }
 
  for(let i=gems.length-1;i>=0;i--){
-  let g=gems[i];
+  const g=gems[i];
   if(g[3]===0&&Math.abs(x-g[0]*8)<7&&Math.abs(y-g[1]*8)<7){
    gems.splice(i,1);held[g[2]]++;score++;
   }
@@ -185,7 +185,7 @@ function tick(){
  }
 
  for(let i=bullets.length-1;i>=0;i--){
-  let b=bullets[i];b[0]+=2;
+  const b=bullets[i];b[0]+=2;
   if(b[0]>168){bullets.splice(i,1);continue;}
   if(Math.abs(b[0]-ex)<8&&Math.abs(b[1]-ey)<8){
    bullets.splice(i,1);hit=5;hx=ex;hy=ey;hp--;
@@ -194,7 +194,7 @@ function tick(){
  }
 
  for(let i=enemyBullets.length-1;i>=0;i--){
-  let b=enemyBullets[i];
+  const b=enemyBullets[i];
   b[0]+=b[2];b[1]+=b[3];
   if(b[0]<-8||b[0]>168||b[1]<-8||b[1]>136){
    enemyBullets.splice(i,1);continue;
@@ -217,9 +217,9 @@ function tick(){
  put(10,16,String(held[2]).padStart(2,'0'),7,1);
  put(16,16,String(Math.ceil(mag)).padStart(3,'0'),7,1);
 
- for(let g of gems)spr(g[0]*8,g[1]*8,'💎',g[2]===2?5:g[2]===1?3:4);
- for(let b of enemyBullets)spr(b[0],b[1],'•',3);
- for(let b of bullets)spr(b[0],b[1],'•',7);
+ for(const g of gems)spr(g[0]*8,g[1]*8,'💎',g[2]===2?5:g[2]===1?3:4);
+ for(const b of enemyBullets)spr(b[0],b[1],'•',3);
+ for(const b of bullets)spr(b[0],b[1],'•',7);
 
  if(hit>0){spr(hx,hy,'✴️',7);hit--;}
  spr(ex,ey,et===1?'🮿':et===2?'🮼':'🮽',ec);
