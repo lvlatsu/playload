@@ -18,9 +18,9 @@ jobs:
           ref: plu/gem-survivor-preset
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-      - run: npm ci
+      - run: npm install
       - name: Format source and regenerate built-in examples
         run: |
           npx prettier --write data/examples.json examples/gem-survivor.js
@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/examples.json examples/gem-survivor.js src/app/examples.js
+          git add package-lock.json data/examples.json examples/gem-survivor.js src/app/examples.js
           if ! git diff --cached --quiet; then
             git commit -m "Format and regenerate GEM SURVIVOR example"
             git push origin HEAD:plu/gem-survivor-preset
