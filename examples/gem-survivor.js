@@ -199,7 +199,7 @@ function tick() {
   if (et === 2 && ex >= 0 && ex <= 160 && --fireWait <= 0) {
     const dx = x - ex,
       dy = y - ey,
-      d = Math.sqrt(dx * dx + dy * dy);
+      d = Math.sqrt(dx * dx + dy * dy) || 1;
     enemyBullets.push([ex, ey, (dx / d) * 1.5, (dy / d) * 1.5]);
     fireWait = 60;
   }
