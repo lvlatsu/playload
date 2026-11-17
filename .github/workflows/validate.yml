@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -21,11 +24,12 @@ jobs:
       - run: npx prettier examples/gem-survivor.js data/examples.json --write
       - run: npm run examples
       - name: Commit generated formatting
+        if: github.event_name == 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add examples/gem-survivor.js data/examples.json src/app/examples.js
-          git diff --cached --quiet || (git commit -m "Format GEM SURVIVOR example" && git push)
+          git diff --cached --quiet || (git commit -m "Format GEM SURVIVOR example" && git push origin HEAD:${{ github.event.pull_request.head.ref }})
       - uses: actions/upload-artifact@v4
         with:
           name: generated-examples
