@@ -1,6 +1,11 @@
 [
   { "id": "starter", "name": "Starter", "description": "Start with the default code." },
   {
+    "id": "gem-survivor",
+    "name": "GEM SURVIVOR",
+    "description": "Collect gems, shoot enemies, and survive with your custom sprite."
+  },
+  {
     "id": "gems",
     "name": "Gems",
     "description": "Dash through three timed gem-collecting rounds."
