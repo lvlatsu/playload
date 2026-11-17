@@ -84,7 +84,8 @@ function putGameOver(){
 function dropGem(){
  const d=held.slice();
  held=[0,0,0];
- const n=d[0]+d[1]+d[2],k=0;
+ const n=d[0]+d[1]+d[2];
+ let k=0;
  const r=10+Math.sqrt(n)*8;
  for(let t=0;t<3;t++)for(let i=0;i<d[t];i++){
   const a=k++*6.283/n+(Math.random()-0.5)*0.5;
