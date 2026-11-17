@@ -1,0 +1,38 @@
+name: Validate GEM SURVIVOR PR
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [plu/gem-survivor-preset]
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: plu/gem-survivor-preset
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Format source and regenerate built-in examples
+        run: |
+          npx prettier --write data/examples.json examples/gem-survivor.js
+          npm run examples
+      - name: Run complete project checks
+        run: npm run check
+      - name: Commit generated and formatted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/examples.json examples/gem-survivor.js src/app/examples.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Format and regenerate GEM SURVIVOR example"
+            git push origin HEAD:plu/gem-survivor-preset
+          fi
