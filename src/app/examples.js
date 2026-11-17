@@ -10,6 +10,13 @@ export const exampleLinks = [
     "hash": ""
   },
   {
+    "id": "gem-survivor",
+    "name": "GEM SURVIVOR",
+    "description": "Collect gems, shoot enemies, and survive with your custom sprite.",
+    "bytes": 2357,
+    "hash": "#v1.nVjdb9vWFX_XX0EbqESKl_Ql9cWIor3McIw-BC6cLsNg6IESaZGLLHESXZG1BSzxgHQfWLBiwLBh4F7y9Pj4bVw2dG1c3vZ4c3Vbq5m8wQ"
+  },
+  {
     "id": "gems",
     "name": "Gems",
     "description": "Dash through three timed gem-collecting rounds.",
