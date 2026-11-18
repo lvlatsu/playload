@@ -4,13 +4,13 @@
     "url": "https://github.com/kitao/playload/issues"
   },
   "description": "A tiny game engine that lets you share games as URLs",
-  "homepage": "https://kitao.dev/playload/",
+  "homepage": "https://lvlatsu.github.io/playload/",
   "license": "MIT",
   "name": "playload",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/kitao/playload.git"
+    "url": "https://github.com/lvlatsu/playload.git"
   },
   "type": "module",
   "version": "0.9.6",
