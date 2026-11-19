@@ -34,7 +34,7 @@ test('the public surface has six functions, five objects, and a fixed 20 by 18 s
   const engine = createEngine(),
     { api } = engine;
   assert.deepEqual(Object.keys(api), [
-    'cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG',
+    'cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG', 'ucpl',
   ]);
   assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 6);
   assert.equal(api.spr.length, 4);
@@ -1413,4 +1413,30 @@ test('layer sprite methods validate inputs and support multiline strings', () =>
     'Leading and trailing newlines preserve sprite line positioning',
   );
   assert.equal(pixel(engine, 0, 0), 0);
+});
+
+
+test('runtime palette API updates colors, supports chaining, copies reads and resets', () => {
+  const engine = createEngine(),
+    { api } = engine;
+  assert.deepEqual(engine.palette, [
+    [0, 0, 0], [85, 65, 95], [100, 105, 100], [215, 115, 85],
+    [80, 140, 215], [100, 185, 100], [230, 200, 110], [220, 245, 255],
+  ]);
+  assert.equal(api.ucpl.set(2, 1, 2, 3), api.ucpl);
+  assert.deepEqual(api.ucpl.get(2), { r: 1, g: 2, b: 3 });
+  const copy = api.ucpl.get(2);
+  copy.r = 255;
+  assert.deepEqual(api.ucpl.get(2), { r: 1, g: 2, b: 3 });
+  const colors = Array.from({ length: 8 }, (_, index) => [index, index + 1, index + 2]);
+  assert.equal(api.ucpl.setAll(colors), api.ucpl);
+  colors[0][0] = 255;
+  assert.deepEqual(api.ucpl.get(0), { r: 0, g: 1, b: 2 });
+  assert.equal(api.ucpl.reset(), api.ucpl);
+  assert.deepEqual(engine.palette[2], [100, 105, 100]);
+  assert.throws(() => api.ucpl.set(8, 0, 0, 0), RangeError);
+  assert.throws(() => api.ucpl.set(0, 256, 0, 0), RangeError);
+  assert.throws(() => api.ucpl.setAll(Array(7).fill([0, 0, 0])), TypeError);
+  assert.throws(() => api.ucpl.setAll(Array.from({ length: 8 }, (_, i) => i ? [0, 0, 0] : [0, 0, 256])), TypeError);
+  assert.deepEqual(engine.palette[0], [0, 0, 0], 'Invalid bulk updates are atomic');
 });
