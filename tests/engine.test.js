@@ -33,7 +33,9 @@ function spriteNoise(positions) {
 test('the public surface has six functions, two variables, and a fixed 20 by 18 screen', () => {
   const engine = createEngine(),
     { api } = engine;
-  assert.deepEqual(Object.keys(api), ['cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG']);
+  assert.deepEqual(Object.keys(api), [
+    'cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG',
+  ]);
   assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 6);
   assert.equal(api.spr.length, 4);
   assert.equal(api.scr.length, 18);
@@ -1397,14 +1399,18 @@ test('layer sprite methods validate inputs and support multiline strings', () =>
   const engine = createEngine(),
     { api } = engine;
   api.pcg.X.pat = 'FFFFFFFFFFFFFFFF';
-  engine.step(() => api.BG.spr(2, 3, 'X\\r\\nX', 7));
+  engine.step(() => api.BG.spr(2, 3, 'X\r\nX', 7));
   assert.equal(pixel(engine, 2, 3), 7);
   assert.equal(pixel(engine, 2, 11), 7);
   assert.equal(pixel(engine, 10, 3), 0);
   assert.throws(() => api.MG.spr(0, 0, 3, 1), TypeError);
   assert.throws(() => api.FG.spr(0, 0, 'X', 8), RangeError);
   assert.throws(() => api.BG.spr(Infinity, 0, 'X', 1), TypeError);
-  engine.step(() => api.BG.spr(0, 0, '\\nX\\n', 1));
-  assert.equal(pixel(engine, 0, 8), 1, 'Leading and trailing newlines preserve sprite line positioning');
+  engine.step(() => api.BG.spr(0, 0, '\nX\n', 1));
+  assert.equal(
+    pixel(engine, 0, 8),
+    1,
+    'Leading and trailing newlines preserve sprite line positioning',
+  );
   assert.equal(pixel(engine, 0, 0), 0);
 });
