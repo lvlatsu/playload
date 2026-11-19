@@ -30,7 +30,7 @@ function spriteNoise(positions) {
   return engine.pixels;
 }
 
-test('the public surface has six functions, five objects, and a fixed 20 by 18 screen', () => {
+test('the public surface has six functions, six objects, and a fixed 20 by 18 screen', () => {
   const engine = createEngine(),
     { api } = engine;
   assert.deepEqual(Object.keys(api), [
