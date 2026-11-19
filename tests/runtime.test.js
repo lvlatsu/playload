@@ -324,7 +324,7 @@ test('an asynchronous error is reported between frames while malformed errors st
   for (const message of ['Timer failed', { toString: null, valueOf: null }]) {
     runtime.load('function tick() {}');
     runtime.worker.onmessage({
-      data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [] },
+      data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [], palette: Array.from({ length: 8 }, () => [0, 0, 0]) },
     });
     assert.equal(runtime.pending, false);
     runtime.worker.onmessage({ data: { type: 'error', message } });
@@ -343,6 +343,7 @@ test('a starting game gets the longer start budget, then each frame the short on
   const runtime = createRuntime(() => {}, errors);
   t.after(() => runtime.stop());
   const pixels = new Uint8Array(160 * 144);
+  const palette = Array.from({ length: 8 }, () => [0, 0, 0]);
   assert(START_TIMEOUT > FRAME_TIMEOUT);
   runtime.load('function tick() {}');
   t.mock.timers.tick(START_TIMEOUT - 1);
@@ -655,10 +656,11 @@ test('runtime refuses extra outstanding batches and rejects invalid catch-up sou
   const runtime = createRuntime(() => {}, errors);
   t.after(() => runtime.stop());
   const pixels = new Uint8Array(160 * 144);
+  const palette = Array.from({ length: 8 }, () => [0, 0, 0]);
   for (const frame of [-1, 2, 0.5]) {
     runtime.load('function tick() {}');
     const worker = runtime.worker;
-    worker.onmessage({ data: { type: 'ready', pixels, sounds: [] } });
+    worker.onmessage({ data: { type: 'ready', pixels, sounds: [], palette } });
     for (const steps of [0, 6, 1.5, NaN]) assert.equal(runtime.frame(steps), false);
     assert.equal(runtime.frame(2), true);
     assert.equal(runtime.frame(2), false);
@@ -669,6 +671,7 @@ test('runtime refuses extra outstanding batches and rejects invalid catch-up sou
         pixels,
         steps: 2,
         sounds: [{ ch: 0, score: compileScore('c'), frame }],
+        palette,
       },
     });
     assert.equal(worker.terminated, true);
