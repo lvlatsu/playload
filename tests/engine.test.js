@@ -1404,9 +1404,7 @@ test('layer sprite methods validate inputs and support multiline strings', () =>
   assert.throws(() => api.MG.spr(0, 0, 3, 1), TypeError);
   assert.throws(() => api.FG.spr(0, 0, 'X', 8), RangeError);
   assert.throws(() => api.BG.spr(Infinity, 0, 'X', 1), TypeError);
-  assert.throws(() => {
-    api.BG.spr(0, 0, 'X', 1);
-    api.BG.spr(0, 0, '\\nX\\n', 1);
-  }, TypeError);
-  assert.equal(pixel(engine, 0, 0), 0, 'Invalid calls do not create visible layer sprites');
+  engine.step(() => api.BG.spr(0, 0, '\\nX\\n', 1));
+  assert.equal(pixel(engine, 0, 8), 1, 'Leading and trailing newlines preserve sprite line positioning');
+  assert.equal(pixel(engine, 0, 0), 0);
 });
