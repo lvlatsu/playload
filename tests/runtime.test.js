@@ -759,3 +759,16 @@ test('undo and redo follow the printed letters on QWERTZ, Dvorak and Cyrillic la
   assert.equal(editor.press('KeyZ', 'Я', { metaKey: true, shiftKey: true }), true);
   assert.equal(editor.value, 'abc');
 });
+
+
+test('worker exposes ucpl and sends changed RGB colors with each frame', async () => {
+  const { messages, send } = createGameWorker();
+  await send({
+    type: 'load',
+    source: 'function tick() { ucpl.set(3, 12, 34, 56); }',
+  });
+  assert.deepEqual(messages[0].palette[3], [12, 34, 56]);
+  await send({ type: 'frame', steps: 1 });
+  assert.deepEqual(messages[1].palette[3], [12, 34, 56]);
+  assert.equal(messages[1].type, 'frame');
+});
