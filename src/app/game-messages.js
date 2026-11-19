@@ -30,7 +30,7 @@ export function readGameReply(data, starting, pendingSteps) {
 
   const steps = starting ? 1 : data?.steps;
   if (
-    !fields(data, ['type', 'pixels', 'sounds'], starting ? [] : ['steps']) ||
+    !fields(data, ['type', 'pixels', 'sounds', 'palette'], starting ? [] : ['steps']) ||
     data.type !== (starting ? 'ready' : 'frame') ||
     !Number.isInteger(steps) ||
     steps < 1 ||
@@ -42,6 +42,9 @@ export function readGameReply(data, starting, pendingSteps) {
     data.pixels.byteLength !== 160 * 144 ||
     data.pixels.buffer.byteLength !== 160 * 144 ||
     data.pixels.some((color) => color > 7) ||
+    !Array.isArray(data.palette) || data.palette.length !== 8 ||
+    !data.palette.every((entry) => Array.isArray(entry) && entry.length === 3 &&
+      entry.every((value) => Number.isInteger(value) && value >= 0 && value <= 255)) ||
     !Array.isArray(data.sounds) ||
     data.sounds.length > 256 * steps ||
     Object.keys(data.sounds).length !== data.sounds.length
