@@ -22,7 +22,10 @@
           "name": "btn(id)",
           "description": "True while the button is held.",
           "example": "if (btn(3)) put(1, 1, \"→\") // Held",
-          "buttons": ["0 ↑ · 1 ↓ · 2 ← · 3 →", "4 Ⓐ (Z/J) · 5 Ⓑ (X/K)"]
+          "buttons": [
+            "0 ↑ · 1 ↓ · 2 ← · 3 →",
+            "4 Ⓐ (Z/J) · 5 Ⓑ (X/K)"
+          ]
         },
         {
           "name": "btnp(id)",
@@ -48,6 +51,26 @@
           "name": "scr[cy][cx]",
           "description": "Cell character and colors; null inherits PCG colors.",
           "example": "scr[4][3].chr = \"👾\" // [cy][cx]\nscr[4][3].col = [null, 1]"
+        }
+      ]
+    },
+    {
+      "title": "Layers",
+      "entries": [
+        {
+          "name": "BG.spr(x, y, str, col)",
+          "description": "Draw sprites on the background layer; cleared and redrawn every frame.",
+          "example": "BG.spr(0, 0, \"★\", 2)"
+        },
+        {
+          "name": "MG.spr(x, y, str, col)",
+          "description": "Draw sprites on the middle layer; rendered after BG and before FG.",
+          "example": "MG.spr(40, 30, \"👾\", 6)"
+        },
+        {
+          "name": "FG.spr(x, y, str, col)",
+          "description": "Draw sprites on the foreground layer; rendered above BG and MG.",
+          "example": "FG.spr(80, 60, \"✦\", 7)"
         }
       ]
     },
@@ -172,27 +195,87 @@
     }
   ],
   "lengths": [
-    ["1", "1/16"],
-    ["2", "3/32"],
-    ["3", "1/8"],
-    ["4", "3/16"],
-    ["5", "1/4"],
-    ["6", "3/8"],
-    ["7", "1/2"],
-    ["8", "3/4"],
-    ["9", "1"],
-    ["10", "1/16 triplet"],
-    ["11", "1/8 triplet"],
-    ["12", "1/4 triplet"]
+    [
+      "1",
+      "1/16"
+    ],
+    [
+      "2",
+      "3/32"
+    ],
+    [
+      "3",
+      "1/8"
+    ],
+    [
+      "4",
+      "3/16"
+    ],
+    [
+      "5",
+      "1/4"
+    ],
+    [
+      "6",
+      "3/8"
+    ],
+    [
+      "7",
+      "1/2"
+    ],
+    [
+      "8",
+      "3/4"
+    ],
+    [
+      "9",
+      "1"
+    ],
+    [
+      "10",
+      "1/16 triplet"
+    ],
+    [
+      "11",
+      "1/8 triplet"
+    ],
+    [
+      "12",
+      "1/4 triplet"
+    ]
   ],
   "envelopes": [
-    ["W0", "decay → 0"],
-    ["W1", "attack → 0"],
-    ["W2", "decay; hold 0"],
-    ["W3", "attack; hold 15"],
-    ["W4", "repeat decay"],
-    ["W5", "repeat attack"],
-    ["W6", "attack / decay"],
-    ["W7", "decay / attack"]
+    [
+      "W0",
+      "decay → 0"
+    ],
+    [
+      "W1",
+      "attack → 0"
+    ],
+    [
+      "W2",
+      "decay; hold 0"
+    ],
+    [
+      "W3",
+      "attack; hold 15"
+    ],
+    [
+      "W4",
+      "repeat decay"
+    ],
+    [
+      "W5",
+      "repeat attack"
+    ],
+    [
+      "W6",
+      "attack / decay"
+    ],
+    [
+      "W7",
+      "decay / attack"
+    ]
   ]
 }
