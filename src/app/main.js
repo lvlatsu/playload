@@ -42,12 +42,17 @@ if (!screenBackground) throw new Error('The stylesheet could not load.');
 await document.fonts.load('14px "JetBrains Mono"').catch(() => {});
 const display = createDisplay(palette, canvas.width, canvas.height);
 const image = new ImageData(display.render(new Uint8Array(160 * 144)), canvas.width, canvas.height);
-const renderer = createFrameRenderer(paint),
-  render = (pixels, force, nextPalette) => {
-    display.setPalette(nextPalette);
-    crtDisplay?.setPalette(nextPalette);
-    renderer.render(pixels, force);
-  };
+const renderer = createFrameRenderer(paint);
+let renderedPalette = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)));
+const render = (pixels, force, nextPalette) => {
+  const changed = nextPalette.some((color, index) =>
+    color.some((value, channel) => value !== renderedPalette[index][channel]),
+  );
+  display.setPalette(nextPalette);
+  crtDisplay?.setPalette(nextPalette);
+  renderedPalette = nextPalette.map((color) => color.slice());
+  renderer.render(pixels, force || changed);
+};
 let crtDisplay;
 let pendingSource = '',
   pendingFocus,
