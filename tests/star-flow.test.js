@@ -6,7 +6,7 @@ import { glyphs } from '../src/engine/glyphs.js';
 import { compileScore } from '../src/engine/sound.js';
 import { encode } from '../src/payload.js';
 
-test('STAR FLOW animates stars through all three drawing layers', async () => {
+test('STAR FLOW animates stars through all three drawing layers and shifts its palette', async () => {
   const source = await readFile(new URL('../examples/star-flow.js', import.meta.url), 'utf8');
   const math = Object.create(Math);
   let randomSeed = 0;
@@ -26,6 +26,7 @@ test('STAR FLOW animates stars through all three drawing layers', async () => {
   assert(game.state().fg.every((star) => star.speed > 0.8));
 
   const before = structuredClone(game.state());
+  const standard = engine.palette;
   engine.step(game.tick);
   const after = game.state();
   assert(after.bg[0].x < before.bg[0].x);
@@ -34,6 +35,9 @@ test('STAR FLOW animates stars through all three drawing layers', async () => {
   assert(engine.pixels.includes(2));
   assert(engine.pixels.includes(4));
   assert(engine.pixels.includes(7));
+  assert.notDeepEqual(engine.palette[2], standard[2]);
+  assert.notDeepEqual(engine.palette[4], standard[4]);
+  assert.notDeepEqual(engine.palette[7], standard[7]);
 
   after.bg[0].x = -9;
   engine.step(game.tick);
