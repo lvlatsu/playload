@@ -33,6 +33,35 @@ export function createEngine(presets = [], compileScore = (s) => s) {
   const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
   // Capture before game code can replace Math.random().
   const random = Math.random;
+  const currentPalette = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)));
+  const paletteApi = Object.freeze({
+    set(index, r, g, b) {
+      if (!Number.isInteger(index) || index < 0 || index > 7) throw new RangeError('Palette index must be 0–7');
+      const values = [r, g, b];
+      if (!values.every((value) => Number.isInteger(value) && value >= 0 && value <= 255))
+        throw new RangeError('RGB values must be integers from 0–255');
+      currentPalette[index] = values;
+      return paletteApi;
+    },
+    setAll(colors) {
+      if (!Array.isArray(colors) || colors.length !== 8 ||
+        !colors.every((entry) => Array.isArray(entry) && entry.length === 3 &&
+          entry.every((value) => Number.isInteger(value) && value >= 0 && value <= 255)))
+        throw new TypeError('Palette needs 8 RGB triplets (0–255)');
+      const next = colors.map((entry) => entry.slice());
+      for (let i = 0; i < 8; i++) currentPalette[i] = next[i];
+      return paletteApi;
+    },
+    get(index) {
+      if (!Number.isInteger(index) || index < 0 || index > 7) throw new RangeError('Palette index must be 0–7');
+      const [r, g, b] = currentPalette[index];
+      return { r, g, b };
+    },
+    reset() {
+      for (let i = 0; i < 8; i++) currentPalette[i] = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)))[i];
+      return paletteApi;
+    },
+  });
   let held = 0,
     pressed = 0,
     pcgBytes = 0,
@@ -520,11 +549,15 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     BG,
     MG,
     FG,
+    ucpl: paletteApi,
   };
   return {
     api,
     get pixels() {
       return render();
+    },
+    get palette() {
+      return currentPalette.map((entry) => entry.slice());
     },
     input(mask) {
       mask &= 63;
