@@ -4,7 +4,8 @@ import { readGameReply } from '../src/app/game-messages.js';
 import { compileScore } from '../src/engine/sound.js';
 
 test('game replies reject hidden buffers, extra fields, sparse arrays and malformed errors', () => {
-  const ready = () => ({ type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [] });
+  const palette = Array.from({ length: 8 }, () => [0, 0, 0]);
+  const ready = () => ({ type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [], palette });
   const large = new Uint8Array(4 * 1024 * 1024);
   const invalid = [
     { ...ready(), pixels: large.subarray(0, 160 * 144) },
