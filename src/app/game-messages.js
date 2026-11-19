@@ -43,8 +43,8 @@ export function readGameReply(data, starting, pendingSteps) {
     data.pixels.buffer.byteLength !== 160 * 144 ||
     data.pixels.some((color) => color > 7) ||
     !Array.isArray(data.palette) || data.palette.length !== 8 ||
-    !data.palette.every((entry) => Array.isArray(entry) && entry.length === 3 &&
-      entry.every((value) => Number.isInteger(value) && value >= 0 && value <= 255)) ||
+    !Array.from(data.palette).every((entry) => Array.isArray(entry) && entry.length === 3 &&
+      Array.from(entry).every((value) => Number.isInteger(value) && value >= 0 && value <= 255)) ||
     !Array.isArray(data.sounds) ||
     data.sounds.length > 256 * steps ||
     Object.keys(data.sounds).length !== data.sounds.length
