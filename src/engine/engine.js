@@ -33,7 +33,8 @@ export function createEngine(presets = [], compileScore = (s) => s) {
   const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
   // Capture before game code can replace Math.random().
   const random = Math.random;
-  const currentPalette = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)));
+  const standardPalette = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)));
+  const currentPalette = standardPalette.map((entry) => entry.slice());
   const paletteApi = Object.freeze({
     set(index, r, g, b) {
       if (!Number.isInteger(index) || index < 0 || index > 7) throw new RangeError('Palette index must be 0–7');
@@ -58,7 +59,7 @@ export function createEngine(presets = [], compileScore = (s) => s) {
       return { r, g, b };
     },
     reset() {
-      for (let i = 0; i < 8; i++) currentPalette[i] = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)))[i];
+      for (let i = 0; i < 8; i++) currentPalette[i] = standardPalette[i].slice();
       return paletteApi;
     },
   });
