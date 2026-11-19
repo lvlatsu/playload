@@ -43,7 +43,11 @@ await document.fonts.load('14px "JetBrains Mono"').catch(() => {});
 const display = createDisplay(palette, canvas.width, canvas.height);
 const image = new ImageData(display.render(new Uint8Array(160 * 144)), canvas.width, canvas.height);
 const renderer = createFrameRenderer(paint),
-  render = renderer.render;
+  render = (pixels, force, nextPalette) => {
+    display.setPalette(nextPalette);
+    crtDisplay?.setPalette(nextPalette);
+    renderer.render(pixels, force);
+  };
 let crtDisplay;
 let pendingSource = '',
   pendingFocus,
