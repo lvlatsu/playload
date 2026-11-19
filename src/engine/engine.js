@@ -422,8 +422,8 @@ export function createEngine(presets = [], compileScore = (s) => s) {
 
         if (
           (str.length === 1 || (str.length === 2 && str.codePointAt(0) > 0xffff)) &&
-          str !== '\\r' &&
-          str !== '\\n'
+          str !== '\r' &&
+          str !== '\n'
         ) {
           if (queue.length < 128) queue.push({ x, y, chr: characterKey(str), col });
           else glitchSprite(x, y);
@@ -432,8 +432,8 @@ export function createEngine(presets = [], compileScore = (s) => s) {
 
         const start = queue.length;
         try {
-          for (const { segment } of segmenter.segment(str.replace(/\\r\\n/g, '\\n'))) {
-            if (segment === '\\n') {
+          for (const { segment } of segmenter.segment(str.replace(/\r\n/g, '\n'))) {
+            if (segment === '\n') {
               x = origin;
               y += 8;
               continue;
