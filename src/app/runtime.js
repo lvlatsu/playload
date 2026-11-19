@@ -43,7 +43,7 @@ export class Runtime {
       clearTimeout(this.watchdog);
       this.pending = false;
       this.starting = false;
-      this.onFrame(data.pixels, data.sounds, data.type === 'ready');
+      this.onFrame(data.pixels, data.sounds, data.type === 'ready', data.palette);
     };
     this.worker.onerror = (event) => {
       event.preventDefault?.();
