@@ -220,7 +220,12 @@ test('unavailable or denied workers report an error and allow retry', (t) => {
   Object.defineProperty(globalThis, 'Worker', { value: SupportedWorker, configurable: true });
   runtime.load('function tick() {}');
   runtime.worker.onmessage({
-    data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [], palette: Array.from({ length: 8 }, () => [0, 0, 0]) },
+    data: {
+      type: 'ready',
+      pixels: new Uint8Array(160 * 144),
+      sounds: [],
+      palette: Array.from({ length: 8 }, () => [0, 0, 0]),
+    },
   });
   assert.equal(frames.mock.callCount(), 1);
   assert.equal(errors.length, 2);
@@ -324,7 +329,12 @@ test('an asynchronous error is reported between frames while malformed errors st
   for (const message of ['Timer failed', { toString: null, valueOf: null }]) {
     runtime.load('function tick() {}');
     runtime.worker.onmessage({
-      data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [], palette: Array.from({ length: 8 }, () => [0, 0, 0]) },
+      data: {
+        type: 'ready',
+        pixels: new Uint8Array(160 * 144),
+        sounds: [],
+        palette: Array.from({ length: 8 }, () => [0, 0, 0]),
+      },
     });
     assert.equal(runtime.pending, false);
     runtime.worker.onmessage({ data: { type: 'error', message } });
