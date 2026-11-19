@@ -33,12 +33,15 @@ export function createEngine(presets = [], compileScore = (s) => s) {
   const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
   // Capture before game code can replace Math.random().
   const random = Math.random;
-  const standardPalette = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)));
+  const standardPalette = palette.map((hex) =>
+    [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)),
+  );
   const currentPalette = standardPalette.map((entry) => entry.slice());
   const paletteApi = Object.freeze({
     set(index, r, g, b) {
       if (arguments.length !== 4) throw new TypeError('ucpl.set needs index, r, g and b');
-      if (!Number.isInteger(index) || index < 0 || index > 7) throw new RangeError('Palette index must be 0–7');
+      if (!Number.isInteger(index) || index < 0 || index > 7)
+        throw new RangeError('Palette index must be 0–7');
       const values = [r, g, b];
       if (!values.every((value) => Number.isInteger(value) && value >= 0 && value <= 255))
         throw new RangeError('RGB values must be integers from 0–255');
@@ -48,11 +51,19 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     setAll(colors) {
       if (arguments.length !== 1 || !Array.isArray(colors) || colors.length !== 8)
         throw new TypeError('Palette needs 8 RGB triplets (0–255)');
-      const next = Array.from(colors, (entry) => Array.isArray(entry) ? Array.from(entry) : entry);
-      if (!next.every((entry) => Array.isArray(entry) && entry.length === 3 &&
-        entry.every((value) => Number.isInteger(value) && value >= 0 && value <= 255)))
+      const next = Array.from(colors, (entry) =>
+        Array.isArray(entry) ? Array.from(entry) : entry,
+      );
+      if (
+        !next.every(
+          (entry) =>
+            Array.isArray(entry) &&
+            entry.length === 3 &&
+            entry.every((value) => Number.isInteger(value) && value >= 0 && value <= 255),
+        )
+      )
         throw new TypeError('Palette needs 8 RGB triplets (0–255)');
-      
+
       for (let i = 0; i < 8; i++) currentPalette[i] = next[i];
       return paletteApi;
     },
