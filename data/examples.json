@@ -1,5 +1,9 @@
 [
-  { "id": "starter", "name": "Starter", "description": "Start with the default code." },
+  {
+    "id": "starter",
+    "name": "Starter",
+    "description": "Start with the default code."
+  },
   {
     "id": "gem-survivor",
     "name": "GEM SURVIVOR",
@@ -49,5 +53,10 @@
     "id": "chiptune",
     "name": "Chiptune",
     "description": "A three-voice song with melody, bass and noise drums."
+  },
+  {
+    "id": "star-flow",
+    "name": "STAR FLOW",
+    "description": "A quiet starfield drifting through three parallax layers."
   }
 ]
