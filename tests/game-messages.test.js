@@ -10,6 +10,8 @@ test('game replies reject hidden buffers, extra fields, sparse arrays and malfor
   const invalid = [
     { ...ready(), pixels: large.subarray(0, 160 * 144) },
     { ...ready(), extra: large },
+    { ...ready(), palette: Array(7).fill([0, 0, 0]) },
+    { ...ready(), palette: Array.from({ length: 8 }, (_, i) => i ? [0, 0, 0] : [0, 0, 256]) },
     { ...ready(), sounds: Object.assign([], { extra: large }) },
     { ...ready(), sounds: Array(1) },
     { type: 'error', message: { toString: null, valueOf: null } },
