@@ -46,8 +46,8 @@ export class Playback {
     this.capture?.suspend(this.document.hidden || !this.running || !active || this.awaitingStart);
   }
 
-  async frame(pixels, sounds, ready) {
-    this.render(pixels, ready);
+  async frame(pixels, sounds, ready, palette) {
+    this.render(pixels, ready, palette);
     this.audio.play(sounds);
     if (!ready) return;
     this.running = true;
