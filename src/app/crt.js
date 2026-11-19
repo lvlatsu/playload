@@ -61,15 +61,15 @@ export function createCRT(palette, width = 640, height = 576, background = '#000
     gl.getUniformLocation(program, 'background'),
     rgb(background).map((value) => value / 255),
   );
-  gl.uniform3fv(
-    gl.getUniformLocation(program, 'colors[0]'),
-    palette.flatMap((hex) =>
-      rgb(hex).map((value) => {
-        const c = value / 255;
-        return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-      }),
-    ),
+  const paletteLocation = gl.getUniformLocation(program, 'colors[0]');
+  const setPalette = (colors) => gl.uniform3fv(
+    paletteLocation,
+    colors.flatMap((color) => color.map((value) => {
+      const c = value / 255;
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    })),
   );
+  setPalette(palette.map((hex) => rgb(hex)));
 
   // Index 255 is black independently of the palette. Populate only the game
   // area each frame; the guard band stays black and the upload remains one
@@ -81,6 +81,7 @@ export function createCRT(palette, width = 640, height = 576, background = '#000
 
   return {
     canvas,
+    setPalette,
     render(pixels) {
       if (gl.isContextLost()) return false;
       for (let y = 0; y < 144; y++)
