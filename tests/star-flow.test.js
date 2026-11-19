@@ -9,7 +9,8 @@ import { encode } from '../src/payload.js';
 test('STAR FLOW animates stars through all three drawing layers', async () => {
   const source = await readFile(new URL('../examples/star-flow.js', import.meta.url), 'utf8');
   const math = Object.create(Math);
-  math.random = () => 0.5;
+  let randomSeed = 0;
+  math.random = () => ((randomSeed++ * 37) % 101) / 101;
   const engine = createEngine(glyphs, compileScore);
   const game = new Function(
     ...Object.keys(engine.api),
