@@ -83,6 +83,31 @@
           "example": "function tick() { // 60 Hz\n  spr(76, 68, \"👾\", 6)\n}"
         }
       ]
+    },
+    {
+      "title": "Runtime Palette",
+      "entries": [
+        {
+          "name": "ucpl.set(index, r, g, b)",
+          "description": "Change one palette color; RGB components are integers 0–255. Returns ucpl for chaining.",
+          "example": "ucpl.set(3, 255, 0, 0)"
+        },
+        {
+          "name": "ucpl.setAll(colors)",
+          "description": "Replace all eight colors with an array of eight [r, g, b] triplets. Validates all entries before applying.",
+          "example": "ucpl.setAll([[0,0,0],[30,20,60],[80,50,120],[120,80,160],[160,120,200],[190,160,220],[220,200,240],[255,255,255]])"
+        },
+        {
+          "name": "ucpl.get(index)",
+          "description": "Read a color as an independent {r, g, b} object.",
+          "example": "const c = ucpl.get(3)\nucpl.set(3, Math.min(255, c.r + 2), c.g, c.b)"
+        },
+        {
+          "name": "ucpl.reset()",
+          "description": "Restore the standard eight-color palette; returns ucpl.",
+          "example": "ucpl.reset()"
+        }
+      ]
     }
   ],
   "sound": [
