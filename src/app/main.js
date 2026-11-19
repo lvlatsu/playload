@@ -43,7 +43,9 @@ await document.fonts.load('14px "JetBrains Mono"').catch(() => {});
 const display = createDisplay(palette, canvas.width, canvas.height);
 const image = new ImageData(display.render(new Uint8Array(160 * 144)), canvas.width, canvas.height);
 const renderer = createFrameRenderer(paint);
-let renderedPalette = palette.map((hex) => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)));
+let renderedPalette = palette.map((hex) =>
+  [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)),
+);
 const render = (pixels, force, nextPalette) => {
   const changed = nextPalette.some((color, index) =>
     color.some((value, channel) => value !== renderedPalette[index][channel]),
