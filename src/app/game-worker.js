@@ -37,7 +37,12 @@ export function startGameWorker(presets, scope = globalThis) {
           )(...Object.values(api));
           if (!tick) throw new Error('Define function tick()');
           await step();
-          send(port, { type: 'ready', pixels: engine.pixels, sounds: engine.sounds(), palette: engine.palette });
+          send(port, {
+            type: 'ready',
+            pixels: engine.pixels,
+            sounds: engine.sounds(),
+            palette: engine.palette,
+          });
           break;
         }
         case 'input':
@@ -52,7 +57,13 @@ export function startGameWorker(presets, scope = globalThis) {
             await step();
             for (const command of engine.sounds()) sounds.push({ ...command, frame });
           }
-          send(port, { type: 'frame', pixels: engine.pixels, sounds, steps, palette: engine.palette });
+          send(port, {
+            type: 'frame',
+            pixels: engine.pixels,
+            sounds,
+            steps,
+            palette: engine.palette,
+          });
           break;
         }
       }
