@@ -64,3 +64,14 @@ test('flat scaling handles smaller dimensions and reuses the output buffer', () 
   assert.equal(display.render(pixels), output);
   assert.deepEqual([...output], Array.from({ length: 6 }, () => [...rgb[7], 255]).flat());
 });
+
+
+test('flat display palette updates recolor existing indexed pixels', () => {
+  const display = createDisplay(palette, 2, 1);
+  const pixels = new Uint8Array(160 * 144);
+  pixels[0] = 3;
+  const changed = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [12, 34, 56],
+    [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  display.setPalette(changed);
+  assert.deepEqual([...display.render(pixels).slice(0, 4)], [12, 34, 56, 255]);
+});
