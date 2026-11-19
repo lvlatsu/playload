@@ -50,8 +50,10 @@ const render = (pixels, force, nextPalette) => {
   const changed = nextPalette.some((color, index) =>
     color.some((value, channel) => value !== renderedPalette[index][channel]),
   );
-  display.setPalette(nextPalette);
-  crtDisplay?.setPalette(nextPalette);
+  if (changed) {
+    display.setPalette(nextPalette);
+    crtDisplay?.setPalette(nextPalette);
+  }
   renderedPalette = nextPalette.map((color) => color.slice());
   renderer.render(pixels, force || changed);
 };
@@ -252,6 +254,7 @@ function paint() {
   if (crt && crtDisplay === undefined) {
     try {
       crtDisplay = createCRT(palette, canvas.width, canvas.height, screenBackground);
+      crtDisplay?.setPalette(renderedPalette);
       crtDisplay?.canvas.addEventListener('webglcontextlost', () => {
         disableCRT();
         paint();
