@@ -220,7 +220,7 @@ test('unavailable or denied workers report an error and allow retry', (t) => {
   Object.defineProperty(globalThis, 'Worker', { value: SupportedWorker, configurable: true });
   runtime.load('function tick() {}');
   runtime.worker.onmessage({
-    data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [] },
+    data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [], palette: Array.from({ length: 8 }, () => [0, 0, 0]) },
   });
   assert.equal(frames.mock.callCount(), 1);
   assert.equal(errors.length, 2);
@@ -234,6 +234,7 @@ test('invalid sound frames stop the worker and valid playback recovers after loa
   const runtime = createRuntime(frames, errors);
   t.after(() => runtime.stop());
   const pixels = new Uint8Array(160 * 144);
+  const palette = Array.from({ length: 8 }, () => [0, 0, 0]);
   const sound = (event) => ({ ch: 0, score: { code: [event], fixedVolume: false } });
   const malformed = [
     ['negative channel', { ch: -1, score: compileScore('c') }],
@@ -255,7 +256,7 @@ test('invalid sound frames stop the worker and valid playback recovers after loa
   for (const [name, command] of malformed) {
     runtime.load('function tick() {}');
     const worker = runtime.worker;
-    worker.onmessage({ data: { type: 'ready', pixels, sounds: [command] } });
+    worker.onmessage({ data: { type: 'ready', pixels, sounds: [command], palette } });
     assert.equal(frames.mock.callCount(), 0, name);
     assert.equal(worker.terminated, true, name);
     assert.equal(runtime.worker, null, name);
@@ -270,16 +271,16 @@ test('invalid sound frames stop the worker and valid playback recovers after loa
     { ch: 0, score: compileScore('T60V0UX0W0M1O0N1c&H') },
     { ch: 2, score: compileScore('T240V15UX65535W7M63O8N12C))') },
   ];
-  worker.onmessage({ data: { type: 'ready', pixels, sounds } });
-  assert.deepEqual(frames.mock.calls[0].arguments, [pixels, sounds, true]);
+  worker.onmessage({ data: { type: 'ready', pixels, sounds, palette } });
+  assert.deepEqual(frames.mock.calls[0].arguments, [pixels, sounds, true, palette]);
   runtime.frame();
   runtime.frame();
   assert.deepEqual(
     worker.messages.map((message) => message.type),
     ['load', 'frame'],
   );
-  worker.onmessage({ data: { type: 'frame', pixels, sounds, steps: 1 } });
-  assert.deepEqual(frames.mock.calls[1].arguments, [pixels, sounds, false]);
+  worker.onmessage({ data: { type: 'frame', pixels, sounds, steps: 1, palette } });
+  assert.deepEqual(frames.mock.calls[1].arguments, [pixels, sounds, false, palette]);
   assert.equal(runtime.pending, false);
   t.mock.timers.tick(FRAME_TIMEOUT);
   assert.equal(errors.mock.callCount(), malformed.length);
@@ -293,7 +294,7 @@ test('the runtime accepts only the reply it is waiting for', (t) => {
   const runtime = createRuntime(frames, errors);
   t.after(() => runtime.stop());
   const pixels = new Uint8Array(160 * 144);
-  const reply = (type) => runtime.worker.onmessage({ data: { type, pixels, sounds: [] } });
+  const reply = (type) => runtime.worker.onmessage({ data: { type, pixels, sounds: [], palette } });
   for (const unsolicited of [
     () => reply('frame'),
     () => (reply('ready'), reply('ready')),
@@ -346,7 +347,7 @@ test('a starting game gets the longer start budget, then each frame the short on
   runtime.load('function tick() {}');
   t.mock.timers.tick(START_TIMEOUT - 1);
   assert.equal(errors.mock.callCount(), 0);
-  runtime.worker.onmessage({ data: { type: 'ready', pixels, sounds: [] } });
+  runtime.worker.onmessage({ data: { type: 'ready', pixels, sounds: [], palette } });
   runtime.frame();
   t.mock.timers.tick(FRAME_TIMEOUT - 1);
   assert.equal(errors.mock.callCount(), 0);
