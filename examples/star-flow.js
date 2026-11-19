@@ -21,7 +21,7 @@ const skyColors = [
   [[80, 140, 215], [50, 65, 145]],
   [[220, 245, 255], [150, 175, 235]],
 ];
-let phase = 0;
+let phase = 1;
 
 function blend(day, night, amount) {
   return day.map((value, i) => Math.round(value + (night[i] - value) * amount));
