@@ -672,6 +672,7 @@ test('runtime refuses extra outstanding batches and rejects invalid catch-up sou
         steps: 2,
         sounds: [{ ch: 0, score: compileScore('c'), frame }],
         palette,
+        palette,
       },
     });
     assert.equal(worker.terminated, true);
