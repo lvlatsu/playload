@@ -1442,6 +1442,9 @@ test('runtime palette API updates colors, supports chaining, copies reads and re
   assert.throws(() => api.ucpl.reset(1), TypeError);
   assert.throws(() => api.ucpl.setAll(Array(7).fill([0, 0, 0])), TypeError);
   assert.throws(() => api.ucpl.setAll(Array(8)), TypeError);
-  assert.throws(() => api.ucpl.setAll(Array.from({ length: 8 }, (_, i) => i ? [0, 0, 0] : [0, 0, 256])), TypeError);
+  assert.throws(
+    () => api.ucpl.setAll(Array.from({ length: 8 }, (_, i) => (i ? [0, 0, 0] : [0, 0, 256]))),
+    TypeError,
+  );
   assert.deepEqual(engine.palette[0], [0, 0, 0], 'Invalid bulk updates are atomic');
 });
