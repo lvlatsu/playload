@@ -22,6 +22,11 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     glitches = new Uint8Array(width * height);
   const characters = Object.create(null),
     sprites = [],
+    layers = {
+      BG: [],
+      MG: [],
+      FG: [],
+    },
     cache = new Map(),
     patterns = new WeakMap(),
     modifiedPcg = new Set();
@@ -405,6 +410,50 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     }
   }
 
+  function createLayer(name) {
+    const queue = layers[name];
+    return Object.freeze({
+      spr(x, y, str, col) {
+        const origin = coordinate(x);
+        x = origin;
+        y = coordinate(y);
+        if (typeof str !== 'string') throw new TypeError('Text must be a string');
+        col = color(col);
+
+        if (
+          (str.length === 1 || (str.length === 2 && str.codePointAt(0) > 0xffff)) &&
+          str !== '\\r' &&
+          str !== '\\n'
+        ) {
+          if (queue.length < 128) queue.push({ x, y, chr: characterKey(str), col });
+          else glitchSprite(x, y);
+          return;
+        }
+
+        const start = queue.length;
+        try {
+          for (const { segment } of segmenter.segment(str.replace(/\\r\\n/g, '\\n'))) {
+            if (segment === '\\n') {
+              x = origin;
+              y += 8;
+              continue;
+            }
+            if (queue.length < 128) queue.push({ x, y, chr: characterKey(segment), col });
+            else glitchSprite(x, y);
+            x += 8;
+          }
+        } catch (error) {
+          queue.length = start;
+          throw error;
+        }
+      },
+    });
+  }
+
+  const BG = createLayer('BG');
+  const MG = createLayer('MG');
+  const FG = createLayer('FG');
+
   function play(ch, str) {
     if (!Number.isInteger(ch) || ch < 0 || ch > 2)
       throw new RangeError('Sound channel must be 0–2');
@@ -452,6 +501,8 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     for (const sprite of sprites) {
       draw(sprite.chr, sprite.x, sprite.y, sprite.col, null);
     }
+    for (const name of ['BG', 'MG', 'FG'])
+      for (const sprite of layers[name]) draw(sprite.chr, sprite.x, sprite.y, sprite.col, null);
     if (spriteOverflow || pcgOverflow)
       for (let i = 0; i < pixels.length; i++) pixels[i] ^= glitches[i];
     return pixels;
@@ -466,6 +517,9 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     play,
     scr,
     pcg,
+    BG,
+    MG,
+    FG,
   };
   return {
     api,
@@ -485,6 +539,7 @@ export function createEngine(presets = [], compileScore = (s) => s) {
       }
       firstFrame = false;
       sprites.length = 0;
+      for (const layer of Object.values(layers)) layer.length = 0;
       try {
         tick();
       } finally {
