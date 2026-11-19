@@ -161,7 +161,7 @@ test('cached pages restore the watchdog and prior pause state, then close resour
     assert.equal(audio.paused, !state.running || state.paused || !state.active);
     assert.equal(capture.suspended, !state.running || !state.active || !!state.awaitingStart);
     assert.equal(timers.size, 1);
-    worker.onmessage({ data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [] } });
+    worker.onmessage({ data: { type: 'ready', pixels: new Uint8Array(160 * 144), sounds: [], palette: Array.from({ length: 8 }, () => [0, 0, 0]) } });
     playback.pagehide(true);
     playback.pageshow(true);
     assert.equal(timers.size, 0);
