@@ -33,7 +33,7 @@ function spriteNoise(positions) {
 test('the public surface has six functions, two variables, and a fixed 20 by 18 screen', () => {
   const engine = createEngine(),
     { api } = engine;
-  assert.deepEqual(Object.keys(api), ['cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg']);
+  assert.deepEqual(Object.keys(api), ['cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG']);
   assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 6);
   assert.equal(api.spr.length, 4);
   assert.equal(api.scr.length, 18);
@@ -1370,4 +1370,43 @@ test('the score cache remains bounded and re-compiles evicted scores', () => {
   assert.equal(calls, 257);
   engine.api.play(0, '0');
   assert.equal(calls, 258);
+});
+
+
+test('BG MG FG sprites render in fixed layer order and reset every frame', () => {
+  const engine = createEngine(),
+    { api } = engine;
+  for (const ch of ['B', 'M', 'F', 'L']) api.pcg[ch].pat = 'FFFFFFFFFFFFFFFF';
+  api.cls(1);
+  engine.step(() => {
+    api.BG.spr(0, 0, 'B', 2);
+    api.MG.spr(0, 0, 'M', 3);
+    api.FG.spr(0, 0, 'F', 4);
+    api.spr(0, 0, 'L', 5);
+  });
+  // Existing API sprites retain their old position beneath the new layers.
+  assert.equal(pixel(engine, 0), 4);
+  assert.equal(pixel(engine, 7, 7), 4);
+  engine.step(() => api.MG.spr(8, 0, 'M', 6));
+  assert.equal(pixel(engine, 0), 1, 'Layer sprites from the previous frame are cleared');
+  assert.equal(pixel(engine, 8), 6);
+  assert.equal(pixel(engine, 16), 1);
+});
+
+test('layer sprite methods validate inputs and support multiline strings', () => {
+  const engine = createEngine(),
+    { api } = engine;
+  api.pcg.X.pat = 'FFFFFFFFFFFFFFFF';
+  engine.step(() => api.BG.spr(2, 3, 'X\\r\\nX', 7));
+  assert.equal(pixel(engine, 2, 3), 7);
+  assert.equal(pixel(engine, 2, 11), 7);
+  assert.equal(pixel(engine, 10, 3), 0);
+  assert.throws(() => api.MG.spr(0, 0, 3, 1), TypeError);
+  assert.throws(() => api.FG.spr(0, 0, 'X', 8), RangeError);
+  assert.throws(() => api.BG.spr(Infinity, 0, 'X', 1), TypeError);
+  assert.throws(() => {
+    api.BG.spr(0, 0, 'X', 1);
+    api.BG.spr(0, 0, '\\nX\\n', 1);
+  }, TypeError);
+  assert.equal(pixel(engine, 0, 0), 0, 'Invalid calls do not create visible layer sprites');
 });
