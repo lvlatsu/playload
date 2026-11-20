@@ -4,9 +4,9 @@
 
 function makeStars(count, minSpeed, maxSpeed, glyph, color) {
   return Array.from({ length: count }, () => ({
-    x: Math.random() * 160,
-    y: Math.random() * 144,
-    speed: minSpeed + Math.random() * (maxSpeed - minSpeed),
+    x: urnd() * 160,
+    y: urnd() * 144,
+    speed: minSpeed + urnd() * (maxSpeed - minSpeed),
     glyph,
     color,
   }));
@@ -24,20 +24,20 @@ const skyColors = [
 let phase = 1;
 
 function blend(day, night, amount) {
-  return day.map((value, i) => Math.round(value + (night[i] - value) * amount));
+  return day.map((value, i) => uflr(value + (night[i] - value) * amount + 0.5));
 }
 
 function flow(layer, stars) {
   for (const star of stars) {
     star.x -= star.speed;
-    if (star.x < -8) star.x = 160 + Math.random() * 24;
+    if (star.x < -8) star.x = 160 + urnd() * 24;
     layer.spr(star.x, star.y, star.glyph, star.color);
   }
 }
 
 function tick() {
   phase += 0.006;
-  const night = (1 - Math.cos(phase)) / 2;
+  const night = (1 - ucos(phase)) / 2;
   ucpl
     .set(2, ...blend(skyColors[0][0], skyColors[0][1], night))
     .set(4, ...blend(skyColors[1][0], skyColors[1][1], night))
