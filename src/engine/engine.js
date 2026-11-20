@@ -567,6 +567,18 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     MG,
     FG,
     ucpl: paletteApi,
+    urnd: () => random(),
+    usin: (value) => Math.sin(value),
+    ucos: (value) => Math.cos(value),
+    utan: (value) => Math.tan(value),
+    usqr: (value) => Math.sqrt(value),
+    uabs: (value) => Math.abs(value),
+    uflr: (value) => Math.floor(value),
+    ucei: (value) => Math.ceil(value),
+    umin: (...values) => Math.min(...values),
+    umax: (...values) => Math.max(...values),
+    upow: (base, exponent) => Math.pow(base, exponent),
+    uatan2: (y, x) => Math.atan2(y, x),
   };
   return {
     api,
