@@ -6,24 +6,20 @@ import { glyphs } from '../src/engine/glyphs.js';
 import { compileScore } from '../src/engine/sound.js';
 import { encode } from '../src/payload.js';
 
-test('STAR FLOW animates stars through all three drawing layers and shifts its palette', async () => {
+test('STAR FLOW uses the PLU math API, animates all three layers and shifts its palette', async () => {
   const source = await readFile(new URL('../examples/star-flow.js', import.meta.url), 'utf8');
-  const math = Object.create(Math);
-  let randomSeed = 0;
-  math.random = () => ((randomSeed++ * 37) % 101) / 101;
   const engine = createEngine(glyphs, compileScore);
   const game = new Function(
     ...Object.keys(engine.api),
-    'Math',
     source + '\nreturn { tick, state: () => ({ bg, mg, fg }) };',
-  )(...Object.values(engine.api), math);
+  )(...Object.values(engine.api));
 
   assert.equal(game.state().bg.length, 36);
   assert.equal(game.state().mg.length, 18);
   assert.equal(game.state().fg.length, 7);
-  assert(game.state().bg.every((star) => star.speed < 0.25));
-  assert(game.state().mg.every((star) => star.speed > 0.3 && star.speed < 0.6));
-  assert(game.state().fg.every((star) => star.speed > 0.8));
+  assert(game.state().bg.every((star) => star.speed >= 0.12 && star.speed < 0.24));
+  assert(game.state().mg.every((star) => star.speed >= 0.35 && star.speed < 0.55));
+  assert(game.state().fg.every((star) => star.speed >= 0.9 && star.speed < 1.4));
 
   const before = structuredClone(game.state());
   const standard = engine.palette;
