@@ -1,12 +1,12 @@
 [
   {
-    "id": "star-flow",
-    "name": "STAR FLOW",
-    "description": "A three-layer starfield whose colors slowly drift from day to night."
-  },
-  {
     "id": "gem-survivor",
     "name": "GEM SURVIVOR",
     "description": "Collect gems, shoot enemies, and survive with your custom sprite."
+  },
+  {
+    "id": "star-flow",
+    "name": "STAR FLOW",
+    "description": "A three-layer starfield whose colors slowly drift from day to night."
   }
 ]
