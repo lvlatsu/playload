@@ -108,6 +108,41 @@
           "example": "ucpl.reset()"
         }
       ]
+    },
+    {
+      "title": "Math",
+      "entries": [
+        {
+          "name": "urnd()",
+          "description": "Random floating-point number from 0 (inclusive) to 1 (exclusive).",
+          "example": "const x = urnd() * 160"
+        },
+        {
+          "name": "usin(n) · ucos(n) · utan(n)",
+          "description": "Sine, cosine and tangent. Angles are in radians.",
+          "example": "const wave = usin(time) * 10"
+        },
+        {
+          "name": "usqr(n) · uabs(n)",
+          "description": "Square root and absolute value.",
+          "example": "const distance = usqr(dx * dx + dy * dy)"
+        },
+        {
+          "name": "uflr(n) · ucei(n)",
+          "description": "Round down (floor) and round up (ceil).",
+          "example": "const tile = uflr(x / 8)"
+        },
+        {
+          "name": "umin(...n) · umax(...n)",
+          "description": "Smallest and largest of the supplied numbers.",
+          "example": "const speed = umin(5, umax(1, value))"
+        },
+        {
+          "name": "upow(base, exponent) · uatan2(y, x)",
+          "description": "Power and two-argument arctangent; angles are in radians.",
+          "example": "const angle = uatan2(dy, dx)"
+        }
+      ]
     }
   ],
   "sound": [
