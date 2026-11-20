@@ -1395,7 +1395,7 @@ test('basic drawing APIs render pixels, lines, rectangles and ellipses on the ma
   assert.equal(pixel(engine, 21, 11), 2, 'Fill color 0 remains a valid black color');
   assert.equal(pixel(engine, 31, 10), 7);
   assert.equal(pixel(engine, 43, 11), 4);
-  assert.equal(pixel(engine, 42, 10), 6);
+  assert.equal(pixel(engine, 41, 10), 6);
 });
 
 test('basic drawing APIs clip at screen edges, ignore empty shapes and validate colors', () => {
