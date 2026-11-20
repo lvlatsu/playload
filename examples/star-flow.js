@@ -12,7 +12,16 @@ function makeStars(count, minSpeed, maxSpeed, glyph, color) {
   }));
 }
 
-const bg = makeStars(36, 0.12, 0.24, '.', 2);
+function makePixels(count, minSpeed, maxSpeed, color) {
+  return Array.from({ length: count }, () => ({
+    x: urnd() * 160,
+    y: urnd() * 144,
+    speed: minSpeed + urnd() * (maxSpeed - minSpeed),
+    color,
+  }));
+}
+
+const bg = makePixels(36, 0.12, 0.24, 2);
 const mg = makeStars(18, 0.35, 0.55, '*', 4);
 const fg = makeStars(7, 0.9, 1.4, '+', 7);
 
