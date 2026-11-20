@@ -320,3 +320,160 @@ html:has(#image-preview[open]) {
     min-height: 36px;
   }
 }
+
+
+/* PLU front door */
+.plu-home {
+  max-width: 920px;
+  margin-top: 76px;
+}
+.plu-hero {
+  padding: clamp(28px, 7vw, 64px) 24px 40px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgb(80 140 215 / 16%), transparent 62%),
+    linear-gradient(145deg, #211c29, #17141c 72%);
+  text-align: center;
+}
+.plu-logo {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 18px;
+  padding: 0 0 18px;
+}
+.plu-logo img {
+  display: block;
+  width: min(100%, 384px);
+  image-rendering: pixelated;
+}
+.plu-logo span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 3px 7px;
+  border: 1px solid #508cd7;
+  background: #17141c;
+  color: #64b9ff;
+  font: 700 0.72rem/1.4 'JetBrains Mono', monospace;
+  letter-spacing: 0.18em;
+}
+.plu-lead {
+  margin: 8px 0 12px;
+  color: var(--accent);
+  font-size: clamp(1.15rem, 3vw, 1.55rem);
+  font-weight: 600;
+}
+.plu-description {
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.9;
+}
+.plu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 0;
+}
+.plu-actions a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 22px;
+  border: 1px solid var(--border);
+  font-weight: 700;
+}
+.plu-actions .plu-primary {
+  border-color: #508cd7;
+  background: #263e61;
+  color: #fff;
+}
+.plu-actions .plu-primary:hover {
+  background: #345783;
+  text-decoration: none;
+}
+.plu-actions .plu-secondary {
+  color: var(--accent);
+}
+.plu-samples {
+  padding: 44px 0 12px;
+}
+.plu-samples h2 {
+  margin: 0;
+  color: var(--accent);
+  font: 700 1rem/1.5 'JetBrains Mono', monospace;
+  letter-spacing: 0.16em;
+  text-align: center;
+}
+.plu-section-lead {
+  margin: 8px 0 22px;
+  color: var(--muted);
+  text-align: center;
+}
+.plu-sample-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.plu-sample {
+  display: flex;
+  flex-direction: column;
+  min-height: 190px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--ink);
+  text-decoration: none;
+}
+.plu-sample:hover {
+  border-color: var(--accent);
+  background: #292333;
+  text-decoration: none;
+}
+.plu-sample-number,
+.plu-sample-open,
+.plu-origin-label {
+  color: var(--accent);
+  font: 0.7rem/1.5 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+}
+.plu-sample strong {
+  margin: 12px 0 8px;
+  font: 700 1.05rem/1.5 'JetBrains Mono', monospace;
+}
+.plu-sample > span:nth-last-child(2) {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.plu-sample-open {
+  margin-top: auto;
+  padding-top: 18px;
+}
+.plu-origin {
+  margin-top: 30px;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-align: center;
+}
+.plu-origin p {
+  margin: 8px 0;
+}
+@media (max-width: 600px) {
+  .plu-home {
+    margin-top: 64px;
+    padding-inline: 16px;
+  }
+  .plu-hero {
+    padding: 32px 16px;
+  }
+  .plu-sample-grid {
+    grid-template-columns: 1fr;
+  }
+  .plu-sample {
+    min-height: 160px;
+  }
+}
