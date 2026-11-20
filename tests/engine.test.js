@@ -30,7 +30,7 @@ function spriteNoise(positions) {
   return engine.pixels;
 }
 
-test('the public surface has six functions, six objects, and a fixed 20 by 18 screen', () => {
+test('the public surface exposes drawing and math APIs with a fixed 20 by 18 screen', () => {
   const engine = createEngine(),
     { api } = engine;
   assert.deepEqual(Object.keys(api), [
@@ -1403,14 +1403,14 @@ test('basic drawing APIs clip at screen edges, ignore empty shapes and validate 
   engine.api.cls(1);
   engine.step(() => {
     engine.api.urec(-2, -2, 5, 5, 3, 4);
-    engine.api.uelp(158, 142, 8, 8, 5, 6);
+    engine.api.uelp(156, 140, 8, 8, 5, 6);
     engine.api.urec(0, 0, 0, 4, 7, 2);
     engine.api.uelp(0, 0, 4, -1, 7, 2);
     engine.api.ulin(-1000000, 72, 1000000, 72, 7);
   });
   assert.equal(pixel(engine, 2, 2), 3);
   assert.equal(pixel(engine, 1, 1), 4);
-  assert.equal(pixel(engine, 162, 142), 5);
+  assert.equal(pixel(engine, 159, 140), 5);
   assert.equal(pixel(engine, 159, 143), 6);
   assert.equal(pixel(engine, 80, 72), 7, 'Long lines are clipped before rasterization');
   assert.throws(() => engine.api.urec(0, 0, 2, 2, 8), RangeError);
