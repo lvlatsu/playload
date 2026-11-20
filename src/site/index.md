@@ -1,27 +1,75 @@
-# PlayLoad Unlimited
+<p align="center">
+  <img src="assets/logo.svg" alt="Playload" width="384">
+</p>
 
-A small game-making environment built on the spirit of PlayLoad — and expanded beyond its original limits.
+<p align="center">
+  A tiny game engine that lets you share games as URLs
+</p>
 
-[Open PLU](https://lvlatsu.github.io/playload/app/)
+<p class="badges" align="center">
+  <a href="https://github.com/kitao/playload"><img src="https://img.shields.io/github/stars/kitao/playload?style=social&amp;label=Star%20on%20GitHub" alt="GitHub stars" height="20" loading="lazy" decoding="async"></a>
+  <a href="https://github.com/sponsors/kitao"><img src="https://img.shields.io/github/sponsors/kitao?label=Sponsor%20on%20GitHub&amp;logo=github%20sponsors&amp;style=social" alt="GitHub Sponsors" height="20" loading="lazy" decoding="async"></a>
+  <a href="https://www.patreon.com/tkitao"><img src="https://img.shields.io/badge/Support%20on%20Patreon-000000?style=social&amp;logo=patreon" alt="Patreon" height="20" loading="lazy" decoding="async"></a>
+  <a href="https://ko-fi.com/H2H27VDKD"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" height="20" loading="lazy" decoding="async"></a>
+</p>
 
-## PLU Samples
+<p class="screenshots" align="center">
+  <a href="assets/images/example-glyph-quest@2x.png"><img src="assets/images/example-glyph-quest.png" alt="The code editor beside a running Glyph Quest game" width="400"></a>
+  <a href="assets/images/info-api@2x.png"><img src="assets/images/info-api.png" alt="The complete game API and ZX 128 PLAY sound cheat sheets" width="400"></a>
+  <a href="assets/images/info-emoji@2x.png"><img src="assets/images/info-emoji.png" alt="Emoji alongside their built-in 8 by 8 pixel artwork" width="400"></a>
+  <a href="assets/images/info-examples@2x.png"><img src="assets/images/info-examples.png" alt="Playable game and sound examples with their source inside the URL" width="400"></a>
+</p>
 
-Read the code, run it, and try changing a few things.
+<h3 align="center">
+  <a href="https://kitao.dev/playload/app/">Open Playload</a>
+  <a class="arcade-link" href="/playload/arcade/">Play community games</a>
+</h3>
 
-### 01 / Milestone — GEM SURVIVOR
+## Specifications
 
-A game that traces the evolution from Limited to Unlimited.
+- Up to 3 KB of compressed JavaScript
+- API with 6 functions, 2 variables and 1 callback
+- 160 × 144 pixels, 8 colors, CRT display
+- Built-in 8 × 8 Unicode letters, symbols and emoji
+- ZX 128 PLAY-compatible, 3 sound channels
+- 4-direction and 2-button input (⬆ ⬇ ⬅ ➡ Ⓐ Ⓑ)
+- The URL’s payload is the whole game — Playable Payload... **Playload!**
 
-[Play GEM SURVIVOR](https://lvlatsu.github.io/playload/app/#v1.rRhdj9tY9T2_4szDTuzGyVw7H5OOkxlKNa32oWo1XYpQlAcn9sSmGds4no6925FoB6nLh6ioVkIgUKV9AC2gCq14QLSwEj-FqFv2if4EdM69175OsnRWYtTO2Pd83vN9vLMD30qDdO7BzcNbcPc7R_fev3f7qDb3UshgCLs9owaQwxB6fXzy8NDsMXrG4y6zCXnmnSxgCKMxQnxv7uILMwD_0dliGiUeDEHgT07ncy8tSbzQO8m_vXK48KP0u06QlmTHQeLJE8QIwgfyMXrgJTCEY2e-8DiyV6D5MapNcpC7yfWfwhDaHNUvWfpZ8ZTLp8k8CO-XWgRhmkQSNouqKp44MxLB7FptZweWF79YXvxpeXGxvPh4efFkefFq-fiL2jQKFynEcyf3kjvOHIZQZ4yx64yxXcYO2322277B2G6fsR6r_piHrHfjhnkD_7PDElxX5L1aXvzo9Ytfv_nHZyuSEm7dGsBHkO2hd3L6fbYHfQN8-u1ygMsh02geJXuwC-eGpOpfmqqDVOMNhnj00-XjHxeqLh8_e_3xk-Xjn7x-8rflo18uH_3uza9efvWzz2vHp-E0DaIQ5pHj3nHmXpp6muukjgHxmQGxb0CMd9LhoxoAv2oSnfEIsmsAx1ECGnqFXGlDDgOIfRvyRkOvAQBht-LTha_RKwByF48ArcU8mHqalsMViM902IGOAfjaAFMvz3SFIJ4HqVavK0cnTqxpUx2G-6jswns_TLWpAWZPb6XR3TQJwplm6a3Yce-mTpJqHQPqrK4rHL4fBSHyNOhIt2s1AIpDl4eduKdwNUTHqlUA4tbUd5LSKIpZUmGXlAzT8umpMYS-pFVxM4GbEe4ZPVVxuVqxg-lQr9vFaekG6QeU18e_jYZKzhkk0dkKA4VFJtTIMs4iy1ZZyEiIETNuZdAgTSHLjAoWQJwTBvoT7w15blcwUJHGEBkNID6D7W2kwAjCx0wwJmPgQS74kCXhgGJrFOfjUZyNYQ-dqnI_V57RYihHhkcSnRlgKfGBwVIEiMUDpGRWsuIXn_owBE7ZOk6ik-u-k1yPXE9jmccYgwYEbqOhMIins9HUH7e452InVUA8eHiOjKa-AWlmQJqPC3IuHX-f186rNWj5-NmbT15-9dtPl4_--OXTp28-eVmmtJs4Z1SQNApWAzIDcu7IzdFcRq64JYG4ejos4kRDh8QtF_9MR-bYgJwf5HRgjQ2YjtjYQCKsT7ot9P33kz98-dlztUCJ-qOWnaJYY-ry_0pVxaQsrjbzTrQz2YsMQJs2TbVGOTCEMzgA7ZaT-q3ECd3oRMOCYjEdHgKDPbAorzn6BIZgQQO0NXyzQ_jki-AYtBQGwGQ2iHoIQ6iQcb-hUglit3bhgCTyt6twACbKt2vcqdjZhfcdAyYGpAbp3kMaNuZGLK5OfVyr1ONN8r1Liae2jajDIZhwABbitW3ZxhVIFyHi3ZKYJpmQ2rwAMTiAdolJPGEPerYy2thytLE60IBVg_f7VG7LMaTNNmC1WdUq8Wl60znxbj_wEmEbMa2kyamHDOPTVOsZsGtA_ea1W4dw-97hUd2AtgGmLuFdA_ts_YNrd-AaHB1-cPQ9qBOJueIDN4nim95JxQvYKXAsEx2NmK6OaWXAhTAEd8TG0AB3ZPI_FsGxAt-XXad0sFlYYfGDJNVCMlWlAaeiecAA2jaksv8W8IDDAxiAO0rHNgRqWS_TRrvfaMAV6LWsfhubb4h5UbV_E1irixqwVteuMPgQhrDJqwmmUqstkZWQp5pC6NNooTmI_CGK7RtAYwC_cxBWQakB7Z6skOeroXArv-7LOMCkpSGWovPhQ5po30N7DqAr76-UyrLiiILJZcgBVeMPNJ68JxKAC-GAAXZrXiqbGDp4BZw3_vnnugEd3a6tqrugjiMiab7QynA0KWrqd6_fPjpUArEAYoGsv33-7OfIeSWOVVglxq9WYd0Kz5Lw95_XDehJYLF7fF1Qq8uGvWnZsJUFRVk61G0DUZTRHmg96lDl4OuRXa4j9to6AmLDkH4qNohCHZ6Sm9KhLXIBu8pKpk-8WRCGOCCo0USssbzJ-KExrVPGQgb7uNqV6cVXPRn-UjnLLjs7ePOFt8LfKvk3h2WycQkDtE5VQmdNQplxUVFO3yG0jZNWsykIBkNsdyJIyTYySDNqupZdk96RMk21U6fB9P6q7aTSinG5TmXqlhdVFNMpSvtUpWW2YS-q37y9tVXHARCJ1Ex5V94mXnqahLIRoziMKqkfZXUaxlpHV0ywmQ4Dcx9NFYQPmk05LRShTiD5hvCiuMenc9xOJ2modXQ0PebAPo9bZIFwXSQG1cITJ9OYQSdNcc3Ci1ucTRU_CDWTCYoGsJapK-IXsefRktPqyWKLBJjkNM-1eZm3ZEKqKpTsu5aBOUDm0trYIPDB0pGYJOi6zOOCAVaakoPFeK0kDqbkwKoc-BDRrAwmrNVfmUxwMOEKo0k83B-afb0sAhIgSba3kes-tgf-OKAxhadBUaF4Iqhzn4v2wDLvFWuPizfM8SgvjuSdqW-7GVwBmp9dXHld2V7Ugikao5cZyAaQZgdcGkZbXXzPlXfZA5VKyies89pqtaOmO_fCWepj5GDt2-c1sNms3mwmsEeBWGdnOKpQCWJKDZqN2mMe2fjEo14N2upsIcy1A31oEsNyVxRmkyBzXB0qLmdCLtnlCpXbKqneGKpmZC2zbysIpkDINyGUy5e8NBtjRJk6Nyh-j5h6WiBLzv_V7oWV-fSyvc3t4EwWNF-QLldw4hjAbgWaC0MW0NIkG7XGH8r52cgajxsNeUY9W76eK_VuS7lV0TkljGra9jalcJeKmhgQpBkGSuZDg0vGddJkhL0lK2XRKSqZgb7HT2Qy9pWBoqgulgGaaUFTCRySQgbDCimXunV_rej6v102KQkKr01EyFnKcIhH-2D2lG85Us4mX0yjMA1Cvrqo0Vc4mBhi6UHv9iu-n6DfsQTpfBq9jDw-PBXDPH2i9bLiFfPTKz7d-LHMda6UH1eqYxE3aANvUWaaMobBymeNVR9U6uGlHaFSrXljIhYsPDHFSXu84iJsFbgklP7ib6YKMgnUVoavirrfxJ9bODespjUKR99111IaZevq4nIJ0eQhEfpFqsknS5QW1XeVXbr0XjnzgPJFrFiFy8nzQdGDFO9-7WV5BF9duyoP36vqLPYNbrHxDuoNzmsbtFd1J61x3tylPUd8JqS4Xv-UvLKcWXyPEjRC7fXviytUvXUq891UJlsnsy5BVpXGF3AvmGsnzkxXqNsr1NWPhzP8QoidgO-8sh8ZRe8pN82Z9BLOaF3YKw9M8c2oUy5oMqWj40p8cykT-sQ4oYZR_9cPP8UVdyPp5B1Uu2XL8uWMzgMICfzMAD9H5N_85T9_fSrwRbHkBRCDCFHlqKaMpfW3z198Ua9Opnj2ivaUt89f_L1ugDeV_ijWnvPafwE)
+[Source code](https://github.com/kitao/playload)
 
-### 02 / Playground — STAR FLOW
+## Create and share
 
-Explore layers, palettes, and flowing stars with PLU's drawing APIs.
+Write JavaScript code in the **CODE** editor and press **Run** to execute it.
+Your code is stored in the URL, so you can share it simply by sending the URL.
+To save your code, bookmark the URL.
 
-[Play STAR FLOW](https://lvlatsu.github.io/playload/app/#v1.tVVNc-o2FN37V5wd8uNibGMDCaXTvI8wnTZNJ3mdLhgWAmTjibA9lt3gvsl_70gyBNK0000XGHHvOfcecY_k4RA_1FktBR6_3jzg9uf7353hEF93lRCQvBWVQpFA1bxShFLyXNSKwPMtimqd1VyiyvJUeYZVtdjseJ5meYp6JwwNm6LJNUeVQmxPRaCyPwWh0HlZVAprIYtnz3GSJt_UWZFjz5_Eo-7LTAXCPssfdQ3Cnh-6VSrbcke2hotvDlCJuqly3FQVb72kKvbsG6TI03p3baXghcBczL8H03jgcI2myrfMxQcEY59MsD0PRpENmi1cn4Sg_4phR00YnPKuZVmNZml06uWL686cF8fZFLmqsU4xP9vvaEzwvSDUzzAi9LweIXRnHXp_iQ6mGjeK9TOOCb0PPUJ0QieX6ImGXRECTxfu9wgTd3bUoZ7aT3YacywdYLkMfJ8Q-LF--CvCUncLfUI0Xa3IQKYaEfmEMIg1IvYJY02I4iMk1IwwiglhbDCBBgUTHRgZ1GrmSFGj3HElMEcwOzPCWop8y7a8JeRZuqsJfK8HeTHvLW-9PS8Z-4PLRhAyM-EmkZWNoA9m2MtshQFMTM_NlkJf_3ndTE6NE1k8_5odhFTMHAWy58D2TYoKrPvbtM2Pp8RmYX54BwzmdmWsMzOZLAHrst_Bd4_IuTbfuaXCyOJNb68ps0NHszq8tvu25tfYl7_J__-ED6b_Vbkqq_eFd4f3XzdRZ5snZqVZc_Tn8D3fH2uo3YUZK-ZgAQZoNoViBum6GCLUsGZTSqPHU6JmIcHzPGuqk-GX_mqp_X0RCFad41z3lR69Sw_e0oN_oE_epYdv6eEFfeY4wHCIjzefflo83P_2y-drbDNV89zOUGFb8eccXEFleSoFSmNbT4_71cQfF4R1eqp29-PnYzFbRN_q3N5RSSO7i_pYg90tCPvUjOhu4TVClizwA0I0Iowi-5nYm-cccUWIA5OZEMaE8an_7f3Dl6OAhKv6TIV-edj2PfX2RdPJuV0QEivntmt2FdhecUTQ99T4Iju9spl4StB3a2hO-18)
+Start your code with `// @title My Title` to set the title shown in browser tabs and bookmarks.
 
-## The Origin
+## Support Playload
 
-PLU is an independent project that builds on PlayLoad, originally created by Takashi Kitao.
+If you enjoy Playload, please consider [starring the project on GitHub](https://github.com/kitao/playload).
+It helps more people discover the project.
 
-[Visit PlayLoad Origin (PLO)](https://kitao.dev/playload/)
+Playload is free to use. Donations are also welcome through
+[GitHub Sponsors](https://github.com/sponsors/kitao), [Patreon](https://www.patreon.com/tkitao) or [Ko-fi](https://ko-fi.com/H2H27VDKD)
+to help cover development costs and give me more time to improve Playload.
+
+## License
+
+Playload's code and documentation are licensed under [MIT](LICENSE).
+
+Bundled third-party materials retain their own licenses:
+
+- [Public Pixel](https://ggbot.itch.io/public-pixel-font): [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+- [Unscii-8](https://github.com/viznut/unscii): public domain / [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+- [Twemoji color reference](https://github.com/jdecked/twemoji): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- [Misaki Gothic](https://littlelimit.net/misaki.htm): [use, modification and redistribution permitted, including commercial use](https://littlelimit.net/font.htm)
+- [Unicode data](https://www.unicode.org/Public/17.0.0/): [Unicode License v3](https://www.unicode.org/license.txt)
+- [DB8](https://pixeljoint.com/forum/forum_posts.asp?TID=26050) (palette): Richard Fhager (DawnBringer)
+- [CRT-Lottes](https://github.com/libretro/glsl-shaders/blob/e808ca09c699db7a843154cf7dc4dfd766d18a8a/crt/shaders/crt-lottes.glsl): public domain
+- [AY volume measurements](https://github.com/mamedev/mame/blob/dd06c01bbbd7d0c1c8aefa477c095861c7f8bf31/src/devices/sound/ay8910.cpp): public domain
+- [Prism](https://prismjs.com/): [MIT](https://github.com/PrismJS/prism/blob/v1.30.0/LICENSE)
+- [Prettier](https://prettier.io/): [MIT](https://github.com/prettier/prettier/blob/3.9.9/LICENSE)
+- [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P) (logo and favicon): [SIL OFL 1.1](https://openfontlicense.org/open-font-license-official-text/)
+- [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) (UI and editor font): [SIL OFL 1.1](https://openfontlicense.org/open-font-license-official-text/)
+- [emu2149](https://github.com/digital-sound-antiques/emu2149) (test reference): [MIT](https://github.com/digital-sound-antiques/emu2149/blob/441f3dc295a9b82db16921461f0678b483db8304/LICENSE)
