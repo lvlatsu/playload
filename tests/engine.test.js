@@ -34,9 +34,11 @@ test('the public surface has six functions, six objects, and a fixed 20 by 18 sc
   const engine = createEngine(),
     { api } = engine;
   assert.deepEqual(Object.keys(api), [
-    'cls', 'put', 'spr', 'upix', 'ulin', 'urec', 'uelp', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG', 'ucpl',
+    'cls', 'put', 'spr', 'upix', 'ulin', 'urec', 'uelp', 'btn', 'btnp', 'play',
+    'scr', 'pcg', 'BG', 'MG', 'FG', 'ucpl',
+    'urnd', 'usin', 'ucos', 'utan', 'usqr', 'uabs', 'uflr', 'ucei', 'umin', 'umax', 'upow', 'uatan2',
   ]);
-  assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 10);
+  assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 22);
   assert.equal(api.spr.length, 4);
   assert.equal(api.scr.length, 18);
   assert(api.scr.every((row) => row.length === 20 && row.every((cell) => cell.chr === ' ')));
@@ -1391,9 +1393,9 @@ test('basic drawing APIs render pixels, lines, rectangles and ellipses on the ma
   assert.equal(pixel(engine, 10, 10), 3);
   assert.equal(pixel(engine, 11, 11), 1, 'Omitted fill leaves the existing surface untouched');
   assert.equal(pixel(engine, 21, 11), 2, 'Fill color 0 remains a valid black color');
-  assert.equal(pixel(engine, 30, 10), 7);
+  assert.equal(pixel(engine, 31, 10), 7);
   assert.equal(pixel(engine, 43, 11), 4);
-  assert.equal(pixel(engine, 43, 10), 6);
+  assert.equal(pixel(engine, 42, 10), 6);
 });
 
 test('basic drawing APIs clip at screen edges, ignore empty shapes and validate colors', () => {
@@ -1406,10 +1408,10 @@ test('basic drawing APIs clip at screen edges, ignore empty shapes and validate 
     engine.api.uelp(0, 0, 4, -1, 7, 2);
     engine.api.ulin(-1000000, 72, 1000000, 72, 7);
   });
-  assert.equal(pixel(engine, 0, 0), 3);
-  assert.equal(pixel(engine, 2, 2), 4);
-  assert.equal(pixel(engine, 159, 143), 5);
-  assert.equal(pixel(engine, 158, 142), 5);
+  assert.equal(pixel(engine, 2, 2), 3);
+  assert.equal(pixel(engine, 1, 1), 4);
+  assert.equal(pixel(engine, 162, 142), 5);
+  assert.equal(pixel(engine, 159, 143), 6);
   assert.equal(pixel(engine, 80, 72), 7, 'Long lines are clipped before rasterization');
   assert.throws(() => engine.api.urec(0, 0, 2, 2, 8), RangeError);
   assert.throws(() => engine.api.uelp(0, 0, 2, 2, 3, 8), RangeError);
