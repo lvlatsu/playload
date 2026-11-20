@@ -1448,3 +1448,21 @@ test('runtime palette API updates colors, supports chaining, copies reads and re
   );
   assert.deepEqual(engine.palette[0], [0, 0, 0], 'Invalid bulk updates are atomic');
 });
+
+test('PLU math API exposes common Math operations and uses the engine random source', () => {
+  const engine = createEngine(),
+    { api } = engine;
+  assert.equal(api.usin(0), 0);
+  assert.equal(api.ucos(0), 1);
+  assert.equal(api.utan(0), 0);
+  assert.equal(api.usqr(81), 9);
+  assert.equal(api.uabs(-4), 4);
+  assert.equal(api.uflr(2.9), 2);
+  assert.equal(api.ucei(2.1), 3);
+  assert.equal(api.umin(8, 3, 5), 3);
+  assert.equal(api.umax(8, 3, 5), 8);
+  assert.equal(api.upow(2, 5), 32);
+  assert.equal(api.uatan2(0, 1), 0);
+  assert(api.urnd() >= 0 && api.urnd() < 1);
+  assert.equal(typeof api.urnd, 'function');
+});
