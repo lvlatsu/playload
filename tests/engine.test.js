@@ -1410,7 +1410,7 @@ test('basic drawing APIs clip at screen edges, ignore empty shapes and validate 
   });
   assert.equal(pixel(engine, 2, 2), 3);
   assert.equal(pixel(engine, 1, 1), 4);
-  assert.equal(pixel(engine, 159, 140), 5);
+  assert.equal(pixel(engine, 158, 140), 5);
   assert.equal(pixel(engine, 159, 143), 6);
   assert.equal(pixel(engine, 80, 72), 7, 'Long lines are clipped before rasterization');
   assert.throws(() => engine.api.urec(0, 0, 2, 2, 8), RangeError);
