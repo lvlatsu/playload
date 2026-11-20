@@ -4,73 +4,238 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="{{DESCRIPTION}}" />
-    <title>PlayLoad Unlimited</title>
-    <meta property="og:title" content="PlayLoad Unlimited" />
+    <title>Playload</title>
+    <meta property="og:title" content="Playload" />
     <meta property="og:description" content="{{DESCRIPTION}}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{HOME_URL}}" />
     <meta property="og:image" content="{{PREVIEW_IMAGE}}" />
     <meta property="og:image:width" content="1600" />
     <meta property="og:image:height" content="900" />
-    <meta property="og:image:alt" content="PlayLoad Unlimited" />
+    <meta property="og:image:alt" content="The code editor beside a running Glyph Quest game" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="{{HOME_URL}}" />
     <link rel="icon" href="/playload/assets/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300..700&amp;display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300..700&amp;display=swap"
+    />
     <link rel="stylesheet" href="/playload/assets/bundles/site-style.css" />
     <script src="/playload/assets/bundles/site.js"></script>
   </head>
+
   <body>
     <header class="site-nav">
-      <a class="parent-link" href="https://kitao.dev/playload/"><span>PLO / Origin</span></a>
+      <a class="parent-link" href="https://kitao.dev/"><span>kitao.dev</span></a>
       <nav class="language-switch" aria-label="Language / 言語">
-        <button type="button" lang="en" data-language="en" aria-pressed="false"><span>English</span></button>
+        <button type="button" lang="en" data-language="en" aria-pressed="false">
+          <span>English</span>
+        </button>
         <span aria-hidden="true">/</span>
-        <button type="button" lang="ja" data-language="ja" aria-pressed="false"><span>日本語</span></button>
+        <button type="button" lang="ja" data-language="ja" aria-pressed="false">
+          <span>日本語</span>
+        </button>
       </nav>
     </header>
-    <main aria-label="PlayLoad Unlimited">
+
+    <main aria-label="Playload">
       <article class="introduction" lang="en">{{INTRODUCTION}}</article>
-      <article class="introduction plu-home" lang="ja">
-        <header class="plu-hero">
-          <h1 class="plu-logo">
-            <img src="/playload/assets/logo.svg" alt="PlayLoad" width="384" />
-            <span>UNLIMITED</span>
-          </h1>
-          <p class="plu-lead">PlayLoadを受け継ぎ、その先へ。</p>
-          <p class="plu-description">小さな画面から、アイデアをゲームに。<br />PLUは、描画・色・レイヤー・アニメーションを広げていくゲーム制作環境です。</p>
-          <p class="plu-actions">
-            <a class="plu-primary" href="/playload/app/">PLUを起動する</a>
-            <a class="plu-secondary" href="#samples">サンプルを見る ↓</a>
-          </p>
-        </header>
-        <section id="samples" class="plu-samples" aria-labelledby="samples-title">
-          <h2 id="samples-title">PLU SAMPLES</h2>
-          <p class="plu-section-lead">コードを見て、動かして、少し改造してみよう。</p>
-          <div class="plu-sample-grid">
-            <a class="plu-sample" href="/playload/app/#v1.rRhdj9tY9T2_4szDTuzGyVw7H5OOkxlKNa32oWo1XYpQlAcn9sSmGds4no6925FoB6nLh6ioVkIgUKV9AC2gCq14QLSwEj-FqFv2if4EdM69175OsnRWYtTO2Pd83vN9vLMD30qDdO7BzcNbcPc7R_fev3f7qDb3UshgCLs9owaQwxB6fXzy8NDsMXrG4y6zCXnmnSxgCKMxQnxv7uILMwD_0dliGiUeDEHgT07ncy8tSbzQO8m_vXK48KP0u06QlmTHQeLJE8QIwgfyMXrgJTCEY2e-8DiyV6D5MapNcpC7yfWfwhDaHNUvWfpZ8ZTLp8k8CO-XWgRhmkQSNouqKp44MxLB7FptZweWF79YXvxpeXGxvPh4efFkefFq-fiL2jQKFynEcyf3kjvOHIZQZ4yx64yxXcYO2322277B2G6fsR6r_piHrHfjhnkD_7PDElxX5L1aXvzo9Ytfv_nHZyuSEm7dGsBHkO2hd3L6fbYHfQN8-u1ygMsh02geJXuwC-eGpOpfmqqDVOMNhnj00-XjHxeqLh8_e_3xk-Xjn7x-8rflo18uH_3uza9efvWzz2vHp-E0DaIQ5pHj3nHmXpp6muukjgHxmQGxb0CMd9LhoxoAv2oSnfEIsmsAx1ECGnqFXGlDDgOIfRvyRkOvAQBht-LTha_RKwByF48ArcU8mHqalsMViM902IGOAfjaAFMvz3SFIJ4HqVavK0cnTqxpUx2G-6jswns_TLWpAWZPb6XR3TQJwplm6a3Yce-mTpJqHQPqrK4rHL4fBSHyNOhIt2s1AIpDl4eduKdwNUTHqlUA4tbUd5LSKIpZUmGXlAzT8umpMYS-pFVxM4GbEe4ZPVVxuVqxg-lQr9vFaekG6QeU18e_jYZKzhkk0dkKA4VFJtTIMs4iy1ZZyEiIETNuZdAgTSHLjAoWQJwTBvoT7w15blcwUJHGEBkNID6D7W2kwAjCx0wwJmPgQS74kCXhgGJrFOfjUZyNYQ-dqnI_V57RYihHhkcSnRlgKfGBwVIEiMUDpGRWsuIXn_owBE7ZOk6ik-u-k1yPXE9jmccYgwYEbqOhMIins9HUH7e452InVUA8eHiOjKa-AWlmQJqPC3IuHX-f186rNWj5-NmbT15-9dtPl4_--OXTp28-eVmmtJs4Z1SQNApWAzIDcu7IzdFcRq64JYG4ejos4kRDh8QtF_9MR-bYgJwf5HRgjQ2YjtjYQCKsT7ot9P33kz98-dlztUCJ-qOWnaJYY-ry_0pVxaQsrjbzTrQz2YsMQJs2TbVGOTCEMzgA7ZaT-q3ECd3oRMOCYjEdHgKDPbAorzn6BIZgQQO0NXyzQ_jki-AYtBQGwGQ2iHoIQ6iQcb-hUglit3bhgCTyt6twACbKt2vcqdjZhfcdAyYGpAbp3kMaNuZGLK5OfVyr1ONN8r1Liae2jajDIZhwABbitW3ZxhVIFyHi3ZKYJpmQ2rwAMTiAdolJPGEPerYy2thytLE60IBVg_f7VG7LMaTNNmC1WdUq8Wl60znxbj_wEmEbMa2kyamHDOPTVOsZsGtA_ea1W4dw-97hUd2AtgGmLuFdA_ts_YNrd-AaHB1-cPQ9qBOJueIDN4nim95JxQvYKXAsEx2NmK6OaWXAhTAEd8TG0AB3ZPI_FsGxAt-XXad0sFlYYfGDJNVCMlWlAaeiecAA2jaksv8W8IDDAxiAO0rHNgRqWS_TRrvfaMAV6LWsfhubb4h5UbV_E1irixqwVteuMPgQhrDJqwmmUqstkZWQp5pC6NNooTmI_CGK7RtAYwC_cxBWQakB7Z6skOeroXArv-7LOMCkpSGWovPhQ5po30N7DqAr76-UyrLiiILJZcgBVeMPNJ68JxKAC-GAAXZrXiqbGDp4BZw3_vnnugEd3a6tqrugjiMiab7QynA0KWrqd6_fPjpUArEAYoGsv33-7OfIeSWOVVglxq9WYd0Kz5Lw95_XDehJYLF7fF1Qq8uGvWnZsJUFRVk61G0DUZTRHmg96lDl4OuRXa4j9to6AmLDkH4qNohCHZ6Sm9KhLXIBu8pKpk-8WRCGOCCo0USssbzJ-KExrVPGQgb7uNqV6cVXPRn-UjnLLjs7ePOFt8LfKvk3h2WycQkDtE5VQmdNQplxUVFO3yG0jZNWsykIBkNsdyJIyTYySDNqupZdk96RMk21U6fB9P6q7aTSinG5TmXqlhdVFNMpSvtUpWW2YS-q37y9tVXHARCJ1Ex5V94mXnqahLIRoziMKqkfZXUaxlpHV0ywmQ4Dcx9NFYQPmk05LRShTiD5hvCiuMenc9xOJ2modXQ0PebAPo9bZIFwXSQG1cITJ9OYQSdNcc3Ci1ucTRU_CDWTCYoGsJapK-IXsefRktPqyWKLBJjkNM-1eZm3ZEKqKpTsu5aBOUDm0trYIPDB0pGYJOi6zOOCAVaakoPFeK0kDqbkwKoc-BDRrAwmrNVfmUxwMOEKo0k83B-afb0sAhIgSba3kes-tgf-OKAxhadBUaF4Iqhzn4v2wDLvFWuPizfM8SgvjuSdqW-7GVwBmp9dXHld2V7Ugikao5cZyAaQZgdcGkZbXXzPlXfZA5VKyies89pqtaOmO_fCWepj5GDt2-c1sNms3mwmsEeBWGdnOKpQCWJKDZqN2mMe2fjEo14N2upsIcy1A31oEsNyVxRmkyBzXB0qLmdCLtnlCpXbKqneGKpmZC2zbysIpkDINyGUy5e8NBtjRJk6Nyh-j5h6WiBLzv_V7oWV-fSyvc3t4EwWNF-QLldw4hjAbgWaC0MW0NIkG7XGH8r52cgajxsNeUY9W76eK_VuS7lV0TkljGra9jalcJeKmhgQpBkGSuZDg0vGddJkhL0lK2XRKSqZgb7HT2Qy9pWBoqgulgGaaUFTCRySQgbDCimXunV_rej6v102KQkKr01EyFnKcIhH-2D2lG85Us4mX0yjMA1Cvrqo0Vc4mBhi6UHv9iu-n6DfsQTpfBq9jDw-PBXDPH2i9bLiFfPTKz7d-LHMda6UH1eqYxE3aANvUWaaMobBymeNVR9U6uGlHaFSrXljIhYsPDHFSXu84iJsFbgklP7ib6YKMgnUVoavirrfxJ9bODespjUKR99111IaZevq4nIJ0eQhEfpFqsknS5QW1XeVXbr0XjnzgPJFrFiFy8nzQdGDFO9-7WV5BF9duyoP36vqLPYNbrHxDuoNzmsbtFd1J61x3tylPUd8JqS4Xv-UvLKcWXyPEjRC7fXviytUvXUq891UJlsnsy5BVpXGF3AvmGsnzkxXqNsr1NWPhzP8QoidgO-8sh8ZRe8pN82Z9BLOaF3YKw9M8c2oUy5oMqWj40p8cykT-sQ4oYZR_9cPP8UVdyPp5B1Uu2XL8uWMzgMICfzMAD9H5N_85T9_fSrwRbHkBRCDCFHlqKaMpfW3z198Ua9Opnj2ivaUt89f_L1ugDeV_ijWnvPafwE">
-              <span class="plu-sample-number">01 / MILESTONE</span>
-              <strong>GEM SURVIVOR</strong>
-              <span>LimitedからUnlimitedへ。PLUの進化をたどる作品。</span>
-              <span class="plu-sample-open">PLAY SAMPLE →</span>
-            </a>
-            <a class="plu-sample" href="/playload/app/#v1.tVVNc-o2FN37V5wd8uNibGMDCaXTvI8wnTZNJ3mdLhgWAmTjibA9lt3gvsl_70gyBNK0000XGHHvOfcecY_k4RA_1FktBR6_3jzg9uf7353hEF93lRCQvBWVQpFA1bxShFLyXNSKwPMtimqd1VyiyvJUeYZVtdjseJ5meYp6JwwNm6LJNUeVQmxPRaCyPwWh0HlZVAprIYtnz3GSJt_UWZFjz5_Eo-7LTAXCPssfdQ3Cnh-6VSrbcke2hotvDlCJuqly3FQVb72kKvbsG6TI03p3baXghcBczL8H03jgcI2myrfMxQcEY59MsD0PRpENmi1cn4Sg_4phR00YnPKuZVmNZml06uWL686cF8fZFLmqsU4xP9vvaEzwvSDUzzAi9LweIXRnHXp_iQ6mGjeK9TOOCb0PPUJ0QieX6ImGXRECTxfu9wgTd3bUoZ7aT3YacywdYLkMfJ8Q-LF--CvCUncLfUI0Xa3IQKYaEfmEMIg1IvYJY02I4iMk1IwwiglhbDCBBgUTHRgZ1GrmSFGj3HElMEcwOzPCWop8y7a8JeRZuqsJfK8HeTHvLW-9PS8Z-4PLRhAyM-EmkZWNoA9m2MtshQFMTM_NlkJf_3ndTE6NE1k8_5odhFTMHAWy58D2TYoKrPvbtM2Pp8RmYX54BwzmdmWsMzOZLAHrst_Bd4_IuTbfuaXCyOJNb68ps0NHszq8tvu25tfYl7_J__-ED6b_Vbkqq_eFd4f3XzdRZ5snZqVZc_Tn8D3fH2uo3YUZK-ZgAQZoNoViBum6GCLUsGZTSqPHU6JmIcHzPGuqk-GX_mqp_X0RCFad41z3lR69Sw_e0oN_oE_epYdv6eEFfeY4wHCIjzefflo83P_2y-drbDNV89zOUGFb8eccXEFleSoFSmNbT4_71cQfF4R1eqp29-PnYzFbRN_q3N5RSSO7i_pYg90tCPvUjOhu4TVClizwA0I0Iowi-5nYm-cccUWIA5OZEMaE8an_7f3Dl6OAhKv6TIV-edj2PfX2RdPJuV0QEivntmt2FdhecUTQ99T4Iju9spl4StB3a2hO-18">
-              <span class="plu-sample-number">02 / PLAYGROUND</span>
-              <strong>STAR FLOW</strong>
-              <span>レイヤー、パレット、星の流れ。PLUの描画機能を試そう。</span>
-              <span class="plu-sample-open">PLAY SAMPLE →</span>
-            </a>
-          </div>
-        </section>
-        <section class="plu-origin">
-          <span class="plu-origin-label">THE ORIGIN</span>
-          <p>PLUは、北尾氏が開発したPlayLoadを原点とする独立した発展プロジェクトです。</p>
-          <a href="https://kitao.dev/playload/">PlayLoad Origin（PLO）を見る →</a>
-        </section>
+
+      <article class="introduction" lang="ja">
+        <h1>
+          <img src="/playload/assets/logo.svg" alt="Playload" width="384" />
+        </h1>
+        <p><span>URLでゲームを共有できる、</span><span>小さなゲームエンジン</span></p>
+        <p class="badges">
+          <a href="https://github.com/kitao/playload"
+            ><img
+              src="https://img.shields.io/github/stars/kitao/playload?style=social&amp;label=Star%20on%20GitHub"
+              alt="GitHub stars"
+              height="20"
+              loading="lazy"
+              decoding="async"
+          /></a>
+          <a href="https://github.com/sponsors/kitao"
+            ><img
+              src="https://img.shields.io/github/sponsors/kitao?label=Sponsor%20on%20GitHub&amp;logo=github%20sponsors&amp;style=social"
+              alt="GitHub Sponsors"
+              height="20"
+              loading="lazy"
+              decoding="async"
+          /></a>
+          <a href="https://www.patreon.com/tkitao"
+            ><img
+              src="https://img.shields.io/badge/Support%20on%20Patreon-000000?style=social&amp;logo=patreon"
+              alt="Patreon"
+              height="20"
+              loading="lazy"
+              decoding="async"
+          /></a>
+          <a href="https://ko-fi.com/H2H27VDKD"
+            ><img
+              src="https://ko-fi.com/img/githubbutton_sm.svg"
+              alt="Support me on Ko-fi"
+              height="20"
+              loading="lazy"
+              decoding="async"
+          /></a>
+        </p>
+        <p class="screenshots">
+          <a href="/playload/assets/images/example-glyph-quest@2x.png">
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/playload/assets/images/example-glyph-quest.png"
+              alt="コードエディタと実行中のGlyph Quest"
+              width="400"
+            />
+          </a>
+          <a href="/playload/assets/images/info-api@2x.png">
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/playload/assets/images/info-api.png"
+              alt="ゲームAPIとZX 128 PLAYのサウンドリファレンス"
+              width="400"
+            />
+          </a>
+          <a href="/playload/assets/images/info-emoji@2x.png">
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/playload/assets/images/info-emoji.png"
+              alt="絵文字と内蔵の8×8ピクセル画像"
+              width="400"
+            />
+          </a>
+          <a href="/playload/assets/images/info-examples@2x.png">
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/playload/assets/images/info-examples.png"
+              alt="ソースコードをURLに収めたゲームとサウンドの作例"
+              width="400"
+            />
+          </a>
+        </p>
+        <p class="app-link">
+          <a href="/playload/app/">Playloadを開く</a>
+          <a class="arcade-link" href="/playload/arcade/">ユーザー作品で遊ぶ</a>
+        </p>
+
+        <h2>仕様</h2>
+        <ul>
+          <li>圧縮後サイズで3KBまでのJavaScript</li>
+          <li>6関数、2変数、1コールバックのAPI</li>
+          <li>160×144ピクセル、8色、CRT表示</li>
+          <li>文字・記号・絵文字の8×8ドット内蔵Unicodeフォント</li>
+          <li>ZX 128 PLAY互換の3チャンネルサウンド</li>
+          <li>4方向・2ボタン入力（⬆ ⬇ ⬅ ➡ Ⓐ Ⓑ）</li>
+          <li>URLのペイロードがゲーム全体 — 遊べるペイロード... <strong>Playload!</strong></li>
+        </ul>
+        <p><a href="https://github.com/kitao/playload">ソースコード</a></p>
+
+        <h2>作って共有する</h2>
+        <p>
+          <strong>CODE</strong
+          >エディタにJavaScriptのコードを書き、<strong>Run</strong>を押して実行します。
+          コードはURLの中に保存されるので、そのURLを送るだけで共有できます。
+          保存したいときは、URLをブックマークしてください。
+        </p>
+        <p>
+          コードの先頭に<code>// @title My Title</code
+          >と書くと、ブラウザのタブやブックマークに表示するタイトルを指定できます。
+        </p>
+
+        <h2>開発を支援する</h2>
+        <p>
+          もしPlayloadを気に入ったら、<a href="https://github.com/kitao/playload">GitHubのスター</a
+          >で応援していただけるとうれしいです。Playloadをより多くの人に知ってもらうきっかけになります。
+        </p>
+        <p>
+          Playloadは無料で使えます。開発費用を補い、改善により多くの時間を使えるよう、<a
+            href="https://github.com/sponsors/kitao"
+            >GitHub Sponsors</a
+          >・<a href="https://www.patreon.com/tkitao">Patreon</a>・<a
+            href="https://ko-fi.com/H2H27VDKD"
+            >Ko-fi</a
+          >で寄付も受け付けています。
+        </p>
+
+        <h2>ライセンス</h2>
+        <p>
+          Playloadのコードとドキュメントは<a href="/playload/LICENSE.txt">MITライセンス</a
+          >で公開しています。
+        </p>
+        <p>同梱する外部の素材には、それぞれのライセンスが適用されます。</p>
+        <ul>
+          <li>
+            <a href="https://ggbot.itch.io/public-pixel-font">Public Pixel</a>:
+            <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
+          </li>
+          <li>
+            <a href="https://github.com/viznut/unscii">Unscii-8</a>: パブリックドメイン /
+            <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
+          </li>
+          <li>
+            <a href="https://github.com/jdecked/twemoji">Twemojiの色参照</a>:
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+          </li>
+          <li>
+            <a href="https://littlelimit.net/misaki.htm">美咲ゴシック</a>:
+            <a href="https://littlelimit.net/font.htm">商用を含む使用・改変・再配布が可能</a>
+          </li>
+          <li>
+            <a href="https://www.unicode.org/Public/17.0.0/">Unicodeデータ</a>:
+            <a href="https://www.unicode.org/license.txt">Unicode License v3</a>
+          </li>
+          <li>
+            <a href="https://pixeljoint.com/forum/forum_posts.asp?TID=26050">DB8</a>（パレット）:
+            Richard Fhager（DawnBringer）
+          </li>
+          <li>
+            <a
+              href="https://github.com/libretro/glsl-shaders/blob/e808ca09c699db7a843154cf7dc4dfd766d18a8a/crt/shaders/crt-lottes.glsl"
+              >CRT-Lottes</a
+            >: パブリックドメイン
+          </li>
+          <li>
+            <a
+              href="https://github.com/mamedev/mame/blob/dd06c01bbbd7d0c1c8aefa477c095861c7f8bf31/src/devices/sound/ay8910.cpp"
+              >AYの音量測定値</a
+            >: パブリックドメイン
+          </li>
+          <li>
+            <a href="https://prismjs.com/">Prism</a>:
+            <a href="https://github.com/PrismJS/prism/blob/v1.30.0/LICENSE">MIT</a>
+          </li>
+          <li>
+            <a href="https://prettier.io/">Prettier</a>:
+            <a href="https://github.com/prettier/prettier/blob/3.9.9/LICENSE">MIT</a>
+          </li>
+          <li>
+            <a href="https://fonts.google.com/specimen/Press+Start+2P">Press Start 2P</a
+            >（ロゴとファビコン）:
+            <a href="https://openfontlicense.org/open-font-license-official-text/">SIL OFL 1.1</a>
+          </li>
+          <li>
+            <a href="https://github.com/JetBrains/JetBrainsMono">JetBrains Mono</a
+            >（UIとエディタのフォント）:
+            <a href="https://openfontlicense.org/open-font-license-official-text/">SIL OFL 1.1</a>
+          </li>
+          <li>
+            <a href="https://github.com/digital-sound-antiques/emu2149">emu2149</a>（テスト用参照）:
+            <a
+              href="https://github.com/digital-sound-antiques/emu2149/blob/441f3dc295a9b82db16921461f0678b483db8304/LICENSE"
+              >MIT</a
+            >
+          </li>
+        </ul>
       </article>
     </main>
+
     <dialog id="image-preview" aria-label="Image preview">
       <button type="button" aria-label="Close image"><img alt="" /></button>
     </dialog>
