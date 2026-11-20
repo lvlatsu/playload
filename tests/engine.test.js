@@ -34,9 +34,9 @@ test('the public surface has six functions, six objects, and a fixed 20 by 18 sc
   const engine = createEngine(),
     { api } = engine;
   assert.deepEqual(Object.keys(api), [
-    'cls', 'put', 'spr', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG', 'ucpl',
+    'cls', 'put', 'spr', 'upix', 'ulin', 'urec', 'uelp', 'btn', 'btnp', 'play', 'scr', 'pcg', 'BG', 'MG', 'FG', 'ucpl',
   ]);
-  assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 6);
+  assert.equal(Object.values(api).filter((value) => typeof value === 'function').length, 10);
   assert.equal(api.spr.length, 4);
   assert.equal(api.scr.length, 18);
   assert(api.scr.every((row) => row.length === 20 && row.every((cell) => cell.chr === ' ')));
@@ -1374,6 +1374,65 @@ test('the score cache remains bounded and re-compiles evicted scores', () => {
   assert.equal(calls, 258);
 });
 
+
+test('basic drawing APIs render pixels, lines, rectangles and ellipses on the main surface', () => {
+  const engine = createEngine();
+  engine.api.cls(1);
+  engine.step(() => {
+    engine.api.upix(2, 3, 7);
+    engine.api.ulin(4, 4, 8, 4, 6);
+    engine.api.urec(10, 10, 4, 3, 3);
+    engine.api.urec(20, 10, 4, 3, 5, 2);
+    engine.api.uelp(30, 10, 5, 5, 7);
+    engine.api.uelp(40, 10, 8, 4, 6, 4);
+  });
+  assert.equal(pixel(engine, 2, 3), 7);
+  for (let x = 4; x <= 8; x++) assert.equal(pixel(engine, x, 4), 6);
+  assert.equal(pixel(engine, 10, 10), 3);
+  assert.equal(pixel(engine, 11, 11), 1, 'Omitted fill leaves the existing surface untouched');
+  assert.equal(pixel(engine, 21, 11), 2, 'Fill color 0 remains a valid black color');
+  assert.equal(pixel(engine, 30, 10), 7);
+  assert.equal(pixel(engine, 43, 11), 4);
+  assert.equal(pixel(engine, 43, 10), 6);
+});
+
+test('basic drawing APIs clip at screen edges, ignore empty shapes and validate colors', () => {
+  const engine = createEngine();
+  engine.api.cls(1);
+  engine.step(() => {
+    engine.api.urec(-2, -2, 5, 5, 3, 4);
+    engine.api.uelp(158, 142, 8, 8, 5, 6);
+    engine.api.urec(0, 0, 0, 4, 7, 2);
+    engine.api.uelp(0, 0, 4, -1, 7, 2);
+    engine.api.ulin(-1000000, 72, 1000000, 72, 7);
+  });
+  assert.equal(pixel(engine, 0, 0), 3);
+  assert.equal(pixel(engine, 2, 2), 4);
+  assert.equal(pixel(engine, 159, 143), 5);
+  assert.equal(pixel(engine, 158, 142), 5);
+  assert.equal(pixel(engine, 80, 72), 7, 'Long lines are clipped before rasterization');
+  assert.throws(() => engine.api.urec(0, 0, 2, 2, 8), RangeError);
+  assert.throws(() => engine.api.uelp(0, 0, 2, 2, 3, 8), RangeError);
+  assert.throws(() => engine.api.upix(Infinity, 0, 1), TypeError);
+  assert.throws(() => engine.api.ulin(0, 0, NaN, 0, 1), TypeError);
+});
+
+test('BG MG FG layers accept all basic drawing APIs and retain fixed compositing order', () => {
+  const engine = createEngine();
+  engine.api.cls(1);
+  engine.step(() => {
+    engine.api.BG.urec(10, 10, 20, 20, 2, 3);
+    engine.api.MG.uelp(10, 10, 20, 20, 4);
+    engine.api.FG.upix(20, 20, 7);
+    engine.api.MG.ulin(0, 0, 5, 5, 6);
+  });
+  assert.equal(pixel(engine, 10, 10), 4, 'MG ellipse overlays BG rectangle outline');
+  assert.equal(pixel(engine, 15, 15), 3, 'Unpainted ellipse interior shows BG fill');
+  assert.equal(pixel(engine, 20, 20), 7, 'FG pixel overlays both lower layers');
+  assert.equal(pixel(engine, 3, 3), 6, 'Layer line is rendered on MG');
+  engine.step(() => {});
+  assert.equal(pixel(engine, 20, 20), 1, 'Layer drawings are cleared each frame');
+});
 
 test('BG MG FG sprites render in fixed layer order and reset every frame', () => {
   const engine = createEngine(),
