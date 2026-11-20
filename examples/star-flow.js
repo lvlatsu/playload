@@ -27,6 +27,14 @@ function blend(day, night, amount) {
   return day.map((value, i) => uflr(value + (night[i] - value) * amount + 0.5));
 }
 
+function flowPixels(layer, stars) {
+  for (const star of stars) {
+    star.x -= star.speed;
+    if (star.x < 0) star.x = 160 + urnd() * 24;
+    layer.upix(star.x, star.y, star.color);
+  }
+}
+
 function flow(layer, stars) {
   for (const star of stars) {
     star.x -= star.speed;
@@ -43,8 +51,8 @@ function tick() {
     .set(4, ...blend(skyColors[1][0], skyColors[1][1], night))
     .set(7, ...blend(skyColors[2][0], skyColors[2][1], night));
 
-  // BACKGROUND: distant stars.
-  flow(BG, bg);
+  // BACKGROUND: distant stars drawn as single pixels.
+  flowPixels(BG, bg);
 
   // MIDGROUND: stars and a colorful planet.
   flow(MG, mg);
