@@ -456,6 +456,36 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     }
   }
 
+  function enqueuePoint(queue, x, y, col) {
+    x = coordinate(x);
+    y = coordinate(y);
+    col = color(col);
+    if (queue.length < 128) queue.push({ type: 'point', x, y, col });
+    else glitchSprite(x, y);
+  }
+
+  function enqueueLine(queue, x1, y1, x2, y2, col) {
+    x1 = coordinate(x1);
+    y1 = coordinate(y1);
+    x2 = coordinate(x2);
+    y2 = coordinate(y2);
+    col = color(col);
+    if (queue.length < 128) queue.push({ type: 'line', x1, y1, x2, y2, col });
+    else glitchSprite(x1, y1);
+  }
+
+  function enqueueShape(queue, type, x, y, w, h, lineCol, fillCol) {
+    x = coordinate(x);
+    y = coordinate(y);
+    w = coordinate(w);
+    h = coordinate(h);
+    lineCol = color(lineCol);
+    if (fillCol !== undefined) fillCol = color(fillCol);
+    if (w <= 0 || h <= 0) return;
+    if (queue.length < 128) queue.push({ type, x, y, w, h, lineCol, fillCol });
+    else glitchSprite(x, y);
+  }
+
   function createLayer(name) {
     const queue = layers[name];
     return Object.freeze({
@@ -493,12 +523,40 @@ export function createEngine(presets = [], compileScore = (s) => s) {
           throw error;
         }
       },
+      upix(x, y, col) {
+        enqueuePoint(queue, x, y, col);
+      },
+      ulin(x1, y1, x2, y2, col) {
+        enqueueLine(queue, x1, y1, x2, y2, col);
+      },
+      urec(x, y, w, h, lineCol, fillCol) {
+        enqueueShape(queue, 'rect', x, y, w, h, lineCol, fillCol);
+      },
+      uelp(x, y, w, h, lineCol, fillCol) {
+        enqueueShape(queue, 'ellipse', x, y, w, h, lineCol, fillCol);
+      },
     });
   }
 
   const BG = createLayer('BG');
   const MG = createLayer('MG');
   const FG = createLayer('FG');
+
+  function upix(x, y, col) {
+    enqueuePoint(sprites, x, y, col);
+  }
+
+  function ulin(x1, y1, x2, y2, col) {
+    enqueueLine(sprites, x1, y1, x2, y2, col);
+  }
+
+  function urec(x, y, w, h, lineCol, fillCol) {
+    enqueueShape(sprites, 'rect', x, y, w, h, lineCol, fillCol);
+  }
+
+  function uelp(x, y, w, h, lineCol, fillCol) {
+    enqueueShape(sprites, 'ellipse', x, y, w, h, lineCol, fillCol);
+  }
 
   function play(ch, str) {
     if (!Number.isInteger(ch) || ch < 0 || ch > 2)
@@ -530,6 +588,112 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     }
   }
 
+  function setPixel(x, y, col) {
+    if (x >= 0 && x < width && y >= 0 && y < height) pixels[y * width + x] = col;
+  }
+
+  function drawLine(x1, y1, x2, y2, col) {
+    // Liang–Barsky clipping keeps work bounded even for extreme endpoints.
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    let t0 = 0;
+    let t1 = 1;
+    for (const [p, q] of [
+      [-dx, x1],
+      [dx, width - 1 - x1],
+      [-dy, y1],
+      [dy, height - 1 - y1],
+    ]) {
+      if (p === 0) {
+        if (q < 0) return;
+      } else {
+        const t = q / p;
+        if (p < 0) t0 = Math.max(t0, t);
+        else t1 = Math.min(t1, t);
+        if (t0 > t1) return;
+      }
+    }
+    let ax = Math.round(x1 + t0 * dx);
+    let ay = Math.round(y1 + t0 * dy);
+    const bx = Math.round(x1 + t1 * dx);
+    const by = Math.round(y1 + t1 * dy);
+    const sx = ax < bx ? 1 : -1;
+    const sy = ay < by ? 1 : -1;
+    const adx = Math.abs(bx - ax);
+    const ady = Math.abs(by - ay);
+    let error = adx - ady;
+    while (true) {
+      setPixel(ax, ay, col);
+      if (ax === bx && ay === by) break;
+      const twice = error * 2;
+      if (twice > -ady) {
+        error -= ady;
+        ax += sx;
+      }
+      if (twice < adx) {
+        error += adx;
+        ay += sy;
+      }
+    }
+  }
+
+  function drawRect(command) {
+    const { x, y, w, h, lineCol, fillCol } = command;
+    const left = Math.max(0, x);
+    const top = Math.max(0, y);
+    const right = Math.min(width - 1, x + w - 1);
+    const bottom = Math.min(height - 1, y + h - 1);
+    if (left > right || top > bottom) return;
+    for (let py = top; py <= bottom; py++) {
+      for (let px = left; px <= right; px++) {
+        const edge = px === x || px === x + w - 1 || py === y || py === y + h - 1;
+        if (edge) setPixel(px, py, lineCol);
+        else if (fillCol !== undefined) setPixel(px, py, fillCol);
+      }
+    }
+  }
+
+  function drawEllipse(command) {
+    const { x, y, w, h, lineCol, fillCol } = command;
+    const left = Math.max(0, x);
+    const top = Math.max(0, y);
+    const right = Math.min(width - 1, x + w - 1);
+    const bottom = Math.min(height - 1, y + h - 1);
+    if (left > right || top > bottom) return;
+    const cx = x + w / 2;
+    const cy = y + h / 2;
+    const rx = w / 2;
+    const ry = h / 2;
+    for (let py = top; py <= bottom; py++) {
+      const ny = (py + 0.5 - cy) / ry;
+      const remaining = 1 - ny * ny;
+      if (remaining < 0) continue;
+      const extent = rx * Math.sqrt(remaining);
+      const first = Math.max(left, Math.ceil(cx - extent - 0.5));
+      const last = Math.min(right, Math.floor(cx + extent - 0.5));
+      if (first > last) continue;
+      if (fillCol !== undefined) {
+        for (let px = first; px <= last; px++) setPixel(px, py, fillCol);
+      }
+      setPixel(first, py, lineCol);
+      setPixel(last, py, lineCol);
+    }
+  }
+
+  function drawCommand(command) {
+    if (command.chr !== undefined) {
+      draw(command.chr, command.x, command.y, command.col, null);
+    } else if (command.type === 'point') {
+      setPixel(command.x, command.y, command.col);
+    } else if (command.type === 'line') {
+      drawLine(command.x1, command.y1, command.x2, command.y2, command.col);
+    } else if (command.type === 'rect') {
+      drawRect(command);
+    } else if (command.type === 'ellipse') {
+      drawEllipse(command);
+    }
+  }
+
   function render() {
     for (let cy = 0; cy < lines; cy++)
       for (let cx = 0; cx < columns; cx++) {
@@ -544,11 +708,9 @@ export function createEngine(presets = [], compileScore = (s) => s) {
         );
       }
 
-    for (const sprite of sprites) {
-      draw(sprite.chr, sprite.x, sprite.y, sprite.col, null);
-    }
+    for (const command of sprites) drawCommand(command);
     for (const name of ['BG', 'MG', 'FG'])
-      for (const sprite of layers[name]) draw(sprite.chr, sprite.x, sprite.y, sprite.col, null);
+      for (const command of layers[name]) drawCommand(command);
     if (spriteOverflow || pcgOverflow)
       for (let i = 0; i < pixels.length; i++) pixels[i] ^= glitches[i];
     return pixels;
@@ -558,6 +720,10 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     cls,
     put,
     spr,
+    upix,
+    ulin,
+    urec,
+    uelp,
     btn: (id) => !!(held & button(id)),
     btnp: (id) => !!(pressed & button(id)),
     play,
