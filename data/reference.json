@@ -36,6 +36,26 @@
           "name": "play(ch, str)",
           "description": "Play sound on channel 0–2 using ZX 128 PLAY.",
           "example": "play(0, \"T150V12O5N3ceg))\")\nplay(0, \"\") // Stop"
+        },
+        {
+          "name": "upix(x, y, col)",
+          "description": "Draw one pixel at the supplied coordinates.",
+          "example": "upix(10, 10, 7)"
+        },
+        {
+          "name": "ulin(x1, y1, x2, y2, col)",
+          "description": "Draw a clipped one-pixel line segment.",
+          "example": "ulin(10, 10, 40, 30, 6)"
+        },
+        {
+          "name": "urec(x, y, w, h, lineCol, fillCol?)",
+          "description": "Draw a rectangle outline and optionally fill its interior; x,y is the top-left corner.",
+          "example": "urec(20, 20, 40, 24, 3)\\nurec(20, 20, 40, 24, 3, 4)"
+        },
+        {
+          "name": "uelp(x, y, w, h, lineCol, fillCol?)",
+          "description": "Draw an ellipse or circle outline and optionally fill it; equal width and height makes a circle.",
+          "example": "uelp(70, 20, 24, 24, 7)\\nuelp(70, 20, 40, 20, 7, 2)"
         }
       ]
     },
@@ -59,18 +79,18 @@
       "entries": [
         {
           "name": "BG.spr(x, y, str, col)",
-          "description": "Draw sprites on the background layer; cleared and redrawn every frame.",
-          "example": "BG.spr(0, 0, \"★\", 2)"
+          "description": "Draw sprites on the background layer; cleared and redrawn every frame. Also supports upix(), ulin(), urec() and uelp() with the same arguments.",
+          "example": "BG.spr(0, 0, \"★\", 2)\\nBG.uelp(70, 20, 40, 20, 7, 2)"
         },
         {
           "name": "MG.spr(x, y, str, col)",
-          "description": "Draw sprites on the middle layer; rendered after BG and before FG.",
-          "example": "MG.spr(40, 30, \"👾\", 6)"
+          "description": "Draw sprites on the middle layer; rendered after BG and before FG. Also supports upix(), ulin(), urec() and uelp() with the same arguments.",
+          "example": "MG.spr(40, 30, \"👾\", 6)\\nMG.uelp(70, 20, 40, 20, 7, 2)"
         },
         {
           "name": "FG.spr(x, y, str, col)",
-          "description": "Draw sprites on the foreground layer; rendered above BG and MG.",
-          "example": "FG.spr(80, 60, \"✦\", 7)"
+          "description": "Draw sprites on the foreground layer; rendered above BG and MG. Also supports upix(), ulin(), urec() and uelp() with the same arguments.",
+          "example": "FG.spr(80, 60, \"✦\", 7)\\nFG.uelp(70, 20, 40, 20, 7, 2)"
         }
       ]
     },
