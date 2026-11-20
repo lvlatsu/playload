@@ -596,6 +596,7 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     // Liang–Barsky clipping keeps work bounded even for extreme endpoints.
     const dx = x2 - x1;
     const dy = y2 - y1;
+    if (!Number.isFinite(dx) || !Number.isFinite(dy)) return;
     let t0 = 0;
     let t1 = 1;
     for (const [p, q] of [
@@ -644,11 +645,23 @@ export function createEngine(presets = [], compileScore = (s) => s) {
     const right = Math.min(width - 1, x + w - 1);
     const bottom = Math.min(height - 1, y + h - 1);
     if (left > right || top > bottom) return;
+
+    if (fillCol === undefined) {
+      for (let px = left; px <= right; px++) {
+        setPixel(px, y, lineCol);
+        setPixel(px, y + h - 1, lineCol);
+      }
+      for (let py = top; py <= bottom; py++) {
+        setPixel(x, py, lineCol);
+        setPixel(x + w - 1, py, lineCol);
+      }
+      return;
+    }
+
     for (let py = top; py <= bottom; py++) {
       for (let px = left; px <= right; px++) {
         const edge = px === x || px === x + w - 1 || py === y || py === y + h - 1;
-        if (edge) setPixel(px, py, lineCol);
-        else if (fillCol !== undefined) setPixel(px, py, fillCol);
+        setPixel(px, py, edge ? lineCol : fillCol);
       }
     }
   }
