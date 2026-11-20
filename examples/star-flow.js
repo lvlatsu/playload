@@ -1,6 +1,6 @@
 // @title STAR FLOW
-// Three layers of stars, with a palette that slowly drifts from day to night.
-// Try changing the star counts, speeds, or the colors below.
+// Three layers of stars, planets, and orbital rings.
+// Try changing the star counts, speeds, planet size, or colors below.
 
 function makeStars(count, minSpeed, maxSpeed, glyph, color) {
   return Array.from({ length: count }, () => ({
@@ -43,7 +43,16 @@ function tick() {
     .set(4, ...blend(skyColors[1][0], skyColors[1][1], night))
     .set(7, ...blend(skyColors[2][0], skyColors[2][1], night));
 
+  // BACKGROUND: distant stars.
   flow(BG, bg);
+
+  // MIDGROUND: stars and a colorful planet.
   flow(MG, mg);
+  MG.uelp(101, 43, 34, 34, 7, 4);
+  MG.uelp(109, 51, 7, 7, 6, 6);
+
+  // FOREGROUND: fast stars and the planet's orbital rings.
   flow(FG, fg);
+  FG.uelp(91, 51, 54, 18, 6);
+  FG.uelp(89, 54, 58, 12, 2);
 }
