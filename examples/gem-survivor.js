@@ -122,7 +122,7 @@ function putMyChr() {
   if (inv === 0 || inv % 10 < 5) {
     drawParts(playerParts, x, y);
     blink = (blink + 1) % 10;
-    if (blink < 8) spr(x - 7, y + 4, '°', 4);
+    if (blink < 8) spr(x - 7, y + 3, '°', 4);
   }
 }
 
