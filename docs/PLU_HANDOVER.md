@@ -46,7 +46,7 @@ PLU は PlayLoad をフォークし、独自のゲーム制作・実行環境へ
 
 この失敗の直接原因は、`src/app/examples.js` の STAR FLOW エントリーに `bytes` キーが重複していたことです。ビルドは重複キー警告をエラーとして扱い停止していました。
 
-`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #151 は後続の push によりキャンセルされました。直近で確認した run #153 は pending で、ジョブ結果はまだ取得できていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。ビルド・デプロイ成功と公開反映は未確認です。
+`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #156（commit `c4e714ea1d5c397058a555e37ac45cae2367bfb1`）では Build site と Deploy の両方が成功し、GitHub Pages の deployment status も success と報告されました。Actions の環境 URL は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。ブラウザでページ内容を独立して確認するところまでは行っていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。
 
 ### 3.2 テスト
 
@@ -71,10 +71,10 @@ Android Chrome を含む実機確認は、この記録時点では未確認で�
 
 **最優先：run #139 のビルド失敗を調査する。**
 
-1. [GitHub Actions の最新 run](https://github.com/lvlatsu/playload/actions) の完了結果を確認する。
-2. 成功した場合は Deploy job と公開 URL の反映を別々に確認する。失敗した場合はログを取得する。
-3. Node.js 24 環境で `npm ci`、`npm run examples:check`、`npm run build` を実行し、生成物の整合性も確認する。
-4. 関連テストを実行し、可能なら `npm run check` まで実行する。
+1. この文書更新後に発生する [GitHub Actions の最新 run](https://github.com/lvlatsu/playload/actions) の完了結果を確認する。
+2. Node.js 24 環境で `npm ci`、`npm run examples:check` を実行し、生成物の整合性を確認する。
+3. `npm test` と `npm run test:browser` を実行し、可能なら `npm run check` まで確認する。
+4. 必要に応じて Android Chrome で主要 API と公開サイトを実機確認する。
 5. 実行したコマンド、結果、コミット SHA、公開確認結果をこの引き継ぎ書と関連章へ記録する。
 
 ビルド失敗の修正と、機能開発の再開を混同しない。公開品質を回復してから次の機能開発へ進む。
