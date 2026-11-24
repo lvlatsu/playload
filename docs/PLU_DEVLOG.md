@@ -2,6 +2,34 @@
 
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
+## 2026-11-24 — GitHub Pages ビルド失敗原因の特定と修正
+
+### 原因の特定
+
+run #139 の Build site ログを取得したところ、`src/app/examples.js` の STAR FLOW エントリーに `bytes` プロパティが重複していた。esbuild の `duplicate-object-key` 警告を `scripts/build.js` がエラーとして扱い、ビルドを停止していた。
+
+ログ上の重複値は古い `800` と新しい `811`。`data/examples.json` には `bytes` は定義されておらず、`scripts/generate-examples.js` が各サンプルソースから圧縮サイズと hash を生成する構成である。
+
+### 修正
+
+- `src/app/examples.js` の STAR FLOW エントリーから古い `bytes: 800` を削除し、`bytes: 811` のみを残した。
+- 修正コミット：`7dbe764932b132fc84fbd9286f81ec7b580439c2`
+
+このファイルは生成物であるため、次の検証で `npm run examples:check` を実行し、生成スクリプトの期待値と一致することを確認する。今回の環境では Node.js を使ったローカル実行はできていない。
+
+### 検証状態
+
+- run #139 の失敗ログ取得：実施。重複キー警告が原因と確認。
+- 重複キー修正：コミット済み。
+- 修正後の GitHub Actions run #151：この記録更新時点で pending。成功未確認。
+- `npm run examples:check`：未実行。
+- `npm run build`：修正後未実行。
+- 自動テスト・実機確認・デプロイ・公開反映：未確認。
+
+### 次の作業
+
+run #151 の結果を確認し、ビルド成功後は deploy と公開反映を確認する。並行して Node.js 24 環境で `npm run examples:check` を実行し、生成物が一致することを確認する。
+
 ---
 
 ## 2026-11-24 — 実装済み描画機能の棚卸しと文書整合性の修正
