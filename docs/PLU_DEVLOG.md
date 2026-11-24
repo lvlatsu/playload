@@ -2,6 +2,17 @@
 
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
+## 2026-11-24 — run #159 成功と生成物チェックの CI 化
+
+- run #159（commit `37df03071de5c0ba903a51af12279392f51814ab`）で Build site と Deploy が成功。GitHub Pages deployment status も success。
+- 環境 URL は `https://lvlatsu.github.io/playload/`。ページ本文の独立したブラウザ確認は未実施。
+- STAR FLOW の生成済み `bytes` 重複を修正した後のビルド成功を再確認。
+- 生成ファイル `src/app/examples.js` と元データ・生成スクリプトの不整合を検出できるよう、Deploy workflow に `npm run examples:check` を追加。
+- 追加した CI チェックの結果は、この記録更新後に起動する最新 workflow で確認する。
+- `npm test`、`npm run test:browser`、Android 実機確認は未実施。
+
+---
+
 ## 2026-11-24 — GitHub Pages ビルド・デプロイ成功の確認
 
 - run #156（commit `c4e714ea1d5c397058a555e37ac45cae2367bfb1`）を確認。
