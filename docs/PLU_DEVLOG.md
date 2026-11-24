@@ -2,6 +2,17 @@
 
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
+## 2026-11-24 — 生成サンプル整合性チェックで残存不整合を検出
+
+- Deploy workflow に追加した `npm run examples:check` は run #164 で失敗。
+- エラーは `Example links are stale; run npm run examples`。現在の `src/app/examples.js` が `data/examples.json` と `examples/*.js` から生成される正規出力と一致していない。
+- 先の `bytes` 重複キー除去でビルドは通るようになったが、生成物全体の一致は回復していなかった。手作業での部分修正では不十分。
+- 一時的に CI で `npm run examples` と `npm run examples:check` を実行し、正規生成ファイルをログへ出力する復旧手順を追加した。
+- 次にログから正規生成物を回収して `src/app/examples.js` 全体を更新し、その後 workflow を `npm run examples:check` のみへ戻す。
+- この時点で run #164 は Check generated examples 失敗、Build site / Deploy はスキップ。run #159 までの Pages デプロイ成功は確認済みだが、現行 main の最新コミットはまだデプロイ成功していない。
+
+---
+
 ## 2026-11-24 — run #159 成功と生成物チェックの CI 化
 
 - run #159（commit `37df03071de5c0ba903a51af12279392f51814ab`）で Build site と Deploy が成功。GitHub Pages deployment status も success。
