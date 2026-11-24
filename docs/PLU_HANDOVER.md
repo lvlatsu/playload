@@ -72,9 +72,9 @@ Android Chrome を含む実機確認は、この記録時点では未確認で�
 
 ## 4. 次に行う作業
 
-**最優先：Playwright 専用 workflow の初回実行結果を確認する。**
+**最優先：Playwright 専用 workflow run #6 の完了結果を確認する。**
 
-1. [GitHub Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) で `PLU Browser Tests` の完了結果を確認する。
+1. [GitHub Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) で run #6（またはそれ以降の最新 `PLU Browser Tests`）の完了結果を確認する。
 2. 失敗した場合は Playwright の診断 artifact とログを確認し、原因を切り分けて修正する。
 3. 成功したら run 番号・commit SHA・テスト件数を記録する。
 4. Android Chrome で公開サイトと主要 API（基本図形、BG/MG/FG、実行時パレット、数学 API）を実機確認する。
