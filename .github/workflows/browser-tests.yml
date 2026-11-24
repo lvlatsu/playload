@@ -4,10 +4,17 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: plu-browser-tests
+  cancel-in-progress: true
 
 jobs:
   browser:
