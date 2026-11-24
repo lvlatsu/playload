@@ -79,7 +79,7 @@ test('the complete publication stays under Playload and every local document lin
     // The introduction loads Noto Sans JP from Google Fonts; the app bundles its font.
     assert.match(home, /href="https:\/\/fonts\.googleapis\.com\/css2\?family=Noto\+Sans\+JP/);
     assert.doesNotMatch(app, /fonts\.googleapis\.com/);
-    assert.match(home, /href="\/playload\/app\/">Open Playload/);
+    assert.match(home, /href="\/playload\/app\/">Open PLU/);
     assert.doesNotMatch(home, /Run locally|ローカルで実行する|git clone|npm run dev/);
     assert.match(home, /href="https:\/\/www.unicode.org\/license.txt"/);
     assert.match(app, /id="about-tab"[\s\S]*id="api-tab"/);
