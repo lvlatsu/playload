@@ -32,8 +32,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Regenerate and verify examples (temporary recovery)
-        run: npm run examples && npm run examples:check && cat src/app/examples.js
+      - name: Check generated examples
+        run: npm run examples:check
 
       - name: Build site
         run: npm run build
