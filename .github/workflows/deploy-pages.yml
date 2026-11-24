@@ -35,6 +35,9 @@ jobs:
       - name: Check generated examples
         run: npm run examples:check
 
+      - name: Run unit tests
+        run: npm test
+
       - name: Build site
         run: npm run build
 
