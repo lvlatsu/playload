@@ -46,7 +46,7 @@ PLU は PlayLoad をフォークし、独自のゲーム制作・実行環境へ
 
 この失敗の直接原因は、`src/app/examples.js` の STAR FLOW エントリーに `bytes` キーが重複していたことです。ビルドは重複キー警告をエラーとして扱い停止していました。
 
-`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #156（commit `c4e714ea1d5c397058a555e37ac45cae2367bfb1`）では Build site と Deploy の両方が成功し、GitHub Pages の deployment status も success と報告されました。Actions の環境 URL は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。ブラウザでページ内容を独立して確認するところまでは行っていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。
+`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #159（commit `37df03071de5c0ba903a51af12279392f51814ab`）では Build site と Deploy の両方が成功し、GitHub Pages の deployment status も success と報告されました。さらに、今後のデプロイで生成物の不整合を早期検出するため、workflow に `npm run examples:check` を追加しました。追加後の workflow run はこの文書更新を含む push で起動するため、最新 run の結果を確認してください。Actions の環境 URL は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。ブラウザでページ内容を独立して確認するところまでは行っていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。
 
 ### 3.2 テスト
 
