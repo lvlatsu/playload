@@ -1,5 +1,17 @@
 # PLU 開発記録
 
+## 2026-11-25 — Playwright ブラウザテストの CI 化と引き継ぎ情報の修正
+
+- Pages workflow の最新成功 run #188（commit `5a4fe47`）を再確認。生成サンプル検査、Node.js 単体テスト、ビルド、Pages Deploy がすべて成功。
+- Playwright ブラウザテストを Pages Deploy から分離し、専用 workflow `.github/workflows/browser-tests.yml` を追加。Node.js 24 と Chromium をセットアップして `npm run test:browser` を実行する。
+- ブラウザ workflow は docs-only push では起動しないよう paths-ignore を設定し、同時実行は最新 run を優先する concurrency 設定を追加。
+- run #6（commit `dc8385b`）で Chromium のセットアップが完了し、Playwright テストを実行中。テスト結果はまだ未確定。完了後に成功／失敗、件数、必要な修正を追記する。
+- `PLU_HANDOVER.md` の古い run #139 最優先課題を削除し、run #188 の成功状況とブラウザテスト・実機確認の残課題を更新。
+- 10章・11章・12章を更新し、Pages workflow と Browser workflow の責務を明記。12章の次作業も古いビルド障害調査から、ブラウザテスト・実機確認・仕様書整合性の確認へ変更。
+- Android Chrome 実機確認、公開ページ内容の独立確認はまだ未実施。
+
+---
+
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
 ## 2026-11-24 — 単体テストの CI 実行成功と Pages デプロイ
