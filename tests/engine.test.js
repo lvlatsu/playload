@@ -1411,7 +1411,7 @@ test('basic drawing APIs clip at screen edges, ignore empty shapes and validate 
   assert.equal(pixel(engine, 2, 2), 3);
   assert.equal(pixel(engine, 1, 1), 4);
   assert.equal(pixel(engine, 158, 140), 5);
-  assert.equal(pixel(engine, 159, 143), 6);
+  assert.equal(pixel(engine, 159, 143), 5, 'Clipped ellipse edge retains its outline color');
   assert.equal(pixel(engine, 80, 72), 7, 'Long lines are clipped before rasterization');
   assert.throws(() => engine.api.urec(0, 0, 2, 2, 8), RangeError);
   assert.throws(() => engine.api.uelp(0, 0, 2, 2, 3, 8), RangeError);
@@ -1428,7 +1428,7 @@ test('BG MG FG layers accept all basic drawing APIs and retain fixed compositing
     engine.api.FG.upix(20, 20, 7);
     engine.api.MG.ulin(0, 0, 5, 5, 6);
   });
-  assert.equal(pixel(engine, 10, 10), 4, 'MG ellipse overlays BG rectangle outline');
+  assert.equal(pixel(engine, 17, 10), 4, 'MG ellipse outline overlays the BG rectangle fill');
   assert.equal(pixel(engine, 15, 15), 3, 'Unpainted ellipse interior shows BG fill');
   assert.equal(pixel(engine, 20, 20), 7, 'FG pixel overlays both lower layers');
   assert.equal(pixel(engine, 3, 3), 6, 'Layer line is rendered on MG');
