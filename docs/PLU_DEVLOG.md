@@ -2,6 +2,18 @@
 
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
+## 2026-11-24 — GitHub Pages ビルド・デプロイ成功の確認
+
+- run #156（commit `c4e714ea1d5c397058a555e37ac45cae2367bfb1`）を確認。
+- Build job：Install dependencies、Build site、Upload Pages artifact がすべて成功。
+- Deploy job：成功。GitHub Pages deployment status は success と報告され、環境 URL は `https://lvlatsu.github.io/playload/`。
+- これにより、重複キー修正を含む commit `c4e714e` の Pages デプロイ処理成功を確認した。
+- ただし、公開ページの内容をブラウザで独立して閲覧確認したわけではない。
+- `npm run examples:check`、`npm test`、`npm run test:browser` は未実行。Android 実機確認も未実施。
+- この記録更新後の push で新しい workflow run が発生するため、次の担当者は Actions の最新 run を確認する。
+
+---
+
 ## 2026-11-24 — 修正後ワークフローの状態更新
 
 run #151 は後続コミットの push によりキャンセルされた。直近で確認した run #153 は pending で、まだジョブ結果を取得できていない。今回の文書更新によってさらに新しい workflow run が発生するため、最終的なビルド・デプロイ結果は GitHub Actions の最新 run で確認すること。
