@@ -2,6 +2,18 @@
 
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
+## 2026-11-24 — サンプル生成物の正規再生成と復旧デプロイ
+
+- run #168 で一時的な復旧ステップ `npm run examples && npm run examples:check` が成功し、その後 Build site と GitHub Pages Deploy も成功。
+- workflow ログに出力された `src/app/examples.js` の完全な生成結果を回収し、リポジトリのファイル全体を正規生成物で更新。
+- 更新コミット：`12e908f5cbe98bc4b6440131fc57046f7fea0858`。
+- この更新により、STAR FLOW の圧縮ペイロードだけでなく GEM SURVIVOR を含むサンプルリンク一覧全体が `data/examples.json` と `examples/*.js` から再生成された。
+- 一時的な `npm run examples`・ログ出力ステップを Deploy workflow から除去し、`npm run examples:check` のみを残した。
+- この記録更新後の最新 workflow で、コミット済み生成物に対する check と build / deploy の成功を確認する。
+- Node.js 単体テスト・Playwright テスト・Android 実機確認は未実施。
+
+---
+
 ## 2026-11-24 — 生成サンプル整合性チェックで残存不整合を検出
 
 - Deploy workflow に追加した `npm run examples:check` は run #164 で失敗。
