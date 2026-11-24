@@ -2,7 +2,7 @@
 
 > この文書は、開発参加者や過去の会話履歴を知らない人が、PLU の目的・現在地・次の作業を把握するための入口です。
 >
-> 最終更新：2026-11-24  
+> 最終更新：2026-11-25  
 > 対象リポジトリ：`lvlatsu/playload`  
 > 対象ブランチ：`main`
 
@@ -37,20 +37,23 @@ PLU は PlayLoad をフォークし、独自のゲーム制作・実行環境へ
 
 ### 3.1 ビルド・デプロイ
 
-最新の確認対象 GitHub Actions は run #139（commit `a7e1f7f`）です。
+2026-11-25 時点で確認できる最新の Pages workflow run は #188（commit `5a4fe47c1fba677a3525e212c7695945f7a8c212`）です。
 
-- Install dependencies：成功
-- Build site：失敗
-- Upload Pages artifact：スキップ
-- Deploy：スキップ
+- `npm run examples:check`：成功
+- `npm test`：成功
+- `npm run build`：成功
+- Pages artifact upload：成功
+- GitHub Pages Deploy：成功
 
-この失敗の直接原因は、`src/app/examples.js` の STAR FLOW エントリーに `bytes` キーが重複していたことです。ビルドは重複キー警告をエラーとして扱い停止していました。
+単体テスト件数の内訳（run #185 のログで確認）：246件中245件成功、失敗0件、1件スキップ。run #188 では `npm test` ステップの成功を確認していますが、同 run の詳細件数は再取得していません。公開先は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。Actions の Deploy 成功は確認済みですが、公開ページの内容をブラウザで独立確認したわけではありません。
 
-`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #159（commit `37df03071de5c0ba903a51af12279392f51814ab`）では Build site と Deploy の両方が成功し、GitHub Pages の deployment status も success と報告されました。さらに、今後のデプロイで生成物の不整合を早期検出するため、workflow に `npm run examples:check` を追加しました。追加後の run #164 では `npm run examples:check` が失敗し、`src/app/examples.js` が生成スクリプトの出力と一致しないことが判明しました。古い重複キーを手で除いただけでは不十分でした。run #168 で一時的に CI 上の `npm run examples` を実行し、正規生成物をログから回収しました。`src/app/examples.js` をその完全な生成結果へ更新したコミットは `12e908f5cbe98bc4b6440131fc57046f7fea0858` です。さらに workflow から一時的な再生成・ログ出力手順を外し、`npm run examples:check` のみへ戻しました。run #185（commit `faf9ce6a182fae48f0368143c3dc54c7da067481`）で、`npm run examples:check`、`npm test`、Build site、GitHub Pages Deploy がすべて成功しました。単体テストは246件中245件成功、失敗0件、1件スキップ。Pages deployment status も success です。Actions の環境 URL は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。ブラウザでページ内容を独立して確認するところまでは行っていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。
+過去の障害経緯：STAR FLOW の `src/app/examples.js` が生成元と不一致で、手作業で重複キーを除くだけでは不十分でした。run #168 で CI 上の正規生成結果を回収し、`12e908f5cbe98bc4b6440131fc57046f7fea0858` で生成済みファイルを更新。その後 workflow に `npm run examples:check` を組み込み、run #173 で生成物チェック・ビルド・デプロイの成功を確認しました。さらに `npm test` を Pages workflow に追加し、run #185/#188 で成功しています。
+
+Playwright は Pages workflow と分離し、専用の `.github/workflows/browser-tests.yml` を追加しました（commit `0ea992bbf139a757bff5491bf217d9e677764a58`）。この workflow は main への push と手動実行で起動し、Node.js 24、Chromium をセットアップして `npm run test:browser` を実行します。追加直後の実行結果は、次の節で確認・追記します。
 
 ### 3.2 テスト
 
-関連する自動テストコードはリポジトリにあります。ただし、上記の調査・文書更新作業ではテストを実行していません。
+自動テストは単体テストとブラウザテストに分けています。Pages workflow は生成サンプル整合性チェック、`npm test`、ビルド、デプロイを実行します。Playwright は `.github/workflows/browser-tests.yml` の専用 workflow で実行します。
 
 `package.json` の主なコマンド：
 
@@ -69,15 +72,16 @@ Android Chrome を含む実機確認は、この記録時点では未確認で�
 
 ## 4. 次に行う作業
 
-**最優先：run #139 のビルド失敗を調査する。**
+**最優先：Playwright 専用 workflow の初回実行結果を確認する。**
 
-1. この文書更新後に発生する [GitHub Actions の最新 run](https://github.com/lvlatsu/playload/actions) の完了結果を確認する。
-2. 最新の Actions run が成功していることを確認する。生成物チェックは run #173 で成功済み。
-3. Playwright ブラウザテスト（`npm run test:browser`）と、可能なら `npm run check` を実行する。
-4. Android Chrome で主要 API と公開サイトを実機確認する。
-5. 実行したコマンド、結果、コミット SHA、公開確認結果をこの引き継ぎ書と関連章へ記録する。
+1. [GitHub Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) で `PLU Browser Tests` の完了結果を確認する。
+2. 失敗した場合は Playwright の診断 artifact とログを確認し、原因を切り分けて修正する。
+3. 成功したら run 番号・commit SHA・テスト件数を記録する。
+4. Android Chrome で公開サイトと主要 API（基本図形、BG/MG/FG、実行時パレット、数学 API）を実機確認する。
+5. 実機確認の端末・OS・ブラウザ・日付・確認項目・結果を記録する。
+6. その後、仕様書の矛盾が残る章（特に04・12〜16章）をソース/APIリファレンス/テストと照合して整理する。
 
-ビルド失敗の修正と、機能開発の再開を混同しない。公開品質を回復してから次の機能開発へ進む。
+Pages のビルド・デプロイ失敗（run #139）は解決済み。古い run #139 を再調査課題として扱わない。
 
 ## 5. ドキュメントの読み順
 
