@@ -81,7 +81,7 @@ test('the complete publication stays under Playload and every local document lin
     assert.doesNotMatch(app, /fonts\.googleapis\.com/);
     assert.match(home, /href="\/playload\/app\/">Open PLU/);
     assert.doesNotMatch(home, /Run locally|ローカルで実行する|git clone|npm run dev/);
-    assert.match(home, /href="https:\/\/www.unicode.org\/license.txt"/);
+    assert.match(app, /href="https:\/\/www.unicode.org\/license.txt"/);
     assert.match(app, /id="about-tab"[\s\S]*id="api-tab"/);
     assert.equal((home.match(/<script /g) || []).length, 1);
     assert.match(home, /src="\/playload\/assets\/bundles\/site\.js"/);
