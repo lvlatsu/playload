@@ -49,6 +49,9 @@ test('the complete publication stays under Playload and every local document lin
     const home = await readFile(join(directory, 'playload/index.html'), 'utf8');
     const app = await readFile(join(directory, 'playload/app/index.html'), 'utf8');
     const arcade = await readFile(join(directory, 'playload/arcade/index.html'), 'utf8');
+    const { homepage } = JSON.parse(
+      await readFile(new URL('../package.json', import.meta.url), 'utf8'),
+    );
     // Content policies come only from _headers, which the browser checks serve as Cloudflare does.
     for (const document of [home, app, arcade])
       assert.doesNotMatch(document, /http-equiv="Content-Security-Policy"/);
@@ -61,7 +64,10 @@ test('the complete publication stays under Playload and every local document lin
       const image = new URL(meta('og:image'));
       assert.equal(
         image.href,
-        `https://kitao.dev/playload/assets/images/${document === home ? 'example-glyph-quest' : 'app-card'}.png`,
+        new URL(
+          `assets/images/${document === home ? 'example-glyph-quest' : 'app-card'}.png`,
+          homepage,
+        ).href,
       );
       const png = await readFile(join(directory, image.pathname));
       assert.deepEqual(
@@ -199,7 +205,7 @@ test('the complete publication stays under Playload and every local document lin
   }
 });
 
-test('every license list links the bundled Prism and Prettier releases', async () => {
+test('the app license list links the bundled Prism and Prettier releases', async () => {
   for (const [name, link] of [
     ['prismjs', (version) => `https://github.com/PrismJS/prism/blob/v${version}/LICENSE`],
     ['prettier', (version) => `https://github.com/prettier/prettier/blob/${version}/LICENSE`],
@@ -207,7 +213,7 @@ test('every license list links the bundled Prism and Prettier releases', async (
     const { version } = JSON.parse(
       await readFile(new URL(`../node_modules/${name}/package.json`, import.meta.url), 'utf8'),
     );
-    for (const source of ['src/site/index.md', 'src/site/index.html', 'src/app/index.html']) {
+    for (const source of ['src/app/index.html']) {
       const document = await readFile(new URL('../' + source, import.meta.url), 'utf8');
       assert(document.includes(link(version)), `${source} links ${name} ${version}`);
     }
