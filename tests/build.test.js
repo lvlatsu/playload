@@ -96,9 +96,9 @@ test('the complete publication stays under Playload and every local document lin
       await readFile(join(directory, font)),
       await readFile(new URL('../src/app/jetbrains-mono.woff2', import.meta.url)),
     );
-    assert.match(home, /https:\/\/ko-fi.com\/H2H27VDKD/);
-    assert.match(home, /href="https:\/\/github.com\/kitao\/playload"/);
-    assert.match(home, /href="https:\/\/github.com\/sponsors\/kitao"/);
+    assert.match(app, /https:\/\/ko-fi.com\/H2H27VDKD/);
+    assert.match(app, /href="https:\/\/github.com\/kitao\/playload"/);
+    assert.match(app, /href="https:\/\/github.com\/sponsors\/kitao"/);
     assert.doesNotMatch(home, /NOTICE|Resource notices|制作履歴|Test material/);
 
     const bundle = (name) =>
