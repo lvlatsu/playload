@@ -12,7 +12,7 @@ PLU は PlayLoad をフォークし、独自のゲーム制作・実行環境へ
 
 このプロジェクトは、特定のゲームを完成させるためだけのものではありません。GEM SURVIVOR は開発のきっかけであり、サンプル作品です。PLU 本体の目標は、さまざまな制作者が自由に挑戦できる制作・実行環境を育てることです。
 
-開発史は [`PLU_HISTORY.md`](PLU_HISTORY.md) を参照してください。
+開発史は [`PLU_HISTORY.md`](PLU_HISTORY.md)、設計判断と作業履歴は [`PLU_DEVLOG.md`](PLU_DEVLOG.md) を参照してください。
 
 ## 2. 現在の到達点
 
