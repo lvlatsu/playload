@@ -46,7 +46,7 @@ PLU は PlayLoad をフォークし、独自のゲーム制作・実行環境へ
 
 この失敗の直接原因は、`src/app/examples.js` の STAR FLOW エントリーに `bytes` キーが重複していたことです。ビルドは重複キー警告をエラーとして扱い停止していました。
 
-`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #159（commit `37df03071de5c0ba903a51af12279392f51814ab`）では Build site と Deploy の両方が成功し、GitHub Pages の deployment status も success と報告されました。さらに、今後のデプロイで生成物の不整合を早期検出するため、workflow に `npm run examples:check` を追加しました。追加後の run #164 では `npm run examples:check` が失敗し、`src/app/examples.js` が生成スクリプトの出力と一致しないことが判明しました。古い重複キーを手で除いただけでは不十分でした。run #168 で一時的に CI 上の `npm run examples` を実行し、正規生成物をログから回収しました。`src/app/examples.js` をその完全な生成結果へ更新したコミットは `12e908f5cbe98bc4b6440131fc57046f7fea0858` です。さらに workflow から一時的な再生成・ログ出力手順を外し、`npm run examples:check` のみへ戻しました。この文書更新後の最新 run で、コミット済み生成物が一致することを確認してください。Actions の環境 URL は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。ブラウザでページ内容を独立して確認するところまでは行っていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。
+`7dbe764` で古い `bytes: 800` を削除し、生成値 `bytes: 811` のみを残す修正を行いました。修正後の run #159（commit `37df03071de5c0ba903a51af12279392f51814ab`）では Build site と Deploy の両方が成功し、GitHub Pages の deployment status も success と報告されました。さらに、今後のデプロイで生成物の不整合を早期検出するため、workflow に `npm run examples:check` を追加しました。追加後の run #164 では `npm run examples:check` が失敗し、`src/app/examples.js` が生成スクリプトの出力と一致しないことが判明しました。古い重複キーを手で除いただけでは不十分でした。run #168 で一時的に CI 上の `npm run examples` を実行し、正規生成物をログから回収しました。`src/app/examples.js` をその完全な生成結果へ更新したコミットは `12e908f5cbe98bc4b6440131fc57046f7fea0858` です。さらに workflow から一時的な再生成・ログ出力手順を外し、`npm run examples:check` のみへ戻しました。run #173（commit `6d3802fface46d85dd2f0d2d6661011bb6f669e6`）で、コミット済み生成物に対する `npm run examples:check`、Build site、GitHub Pages Deploy がすべて成功しました。Pages deployment status も success です。したがって、正規生成物の整合性とデプロイ処理の成功を確認済みです。Actions の環境 URL は [PLU 公開サイト](https://lvlatsu.github.io/playload/) です。ブラウザでページ内容を独立して確認するところまでは行っていません。この引き継ぎ書の更新自体も新しい push を発生させるため、作業再開時は [Actions の最新 run 一覧](https://github.com/lvlatsu/playload/actions) を確認してください。
 
 ### 3.2 テスト
 
@@ -72,7 +72,7 @@ Android Chrome を含む実機確認は、この記録時点では未確認で�
 **最優先：run #139 のビルド失敗を調査する。**
 
 1. この文書更新後に発生する [GitHub Actions の最新 run](https://github.com/lvlatsu/playload/actions) の完了結果を確認する。
-2. Node.js 24 環境で `npm ci`、`npm run examples:check` を実行し、生成物の整合性を確認する。
+2. 最新の Actions run が成功していることを確認する。生成物チェックは run #173 で成功済み。
 3. `npm test` と `npm run test:browser` を実行し、可能なら `npm run check` まで確認する。
 4. 必要に応じて Android Chrome で主要 API と公開サイトを実機確認する。
 5. 実行したコマンド、結果、コミット SHA、公開確認結果をこの引き継ぎ書と関連章へ記録する。
