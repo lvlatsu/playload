@@ -299,6 +299,7 @@ test('the runtime accepts only the reply it is waiting for', (t) => {
   const runtime = createRuntime(frames, errors);
   t.after(() => runtime.stop());
   const pixels = new Uint8Array(160 * 144);
+  const palette = Array.from({ length: 8 }, () => [0, 0, 0]);
   const reply = (type) => runtime.worker.onmessage({ data: { type, pixels, sounds: [], palette } });
   for (const unsolicited of [
     () => reply('frame'),
