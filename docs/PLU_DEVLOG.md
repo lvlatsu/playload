@@ -2,6 +2,16 @@
 
 この記録は、仕様・実装・検証の経緯と判断理由を残すための追記型ログです。新しい記録を先頭へ追加し、過去の記録は原則として書き換えません。
 
+## 2026-11-24 — コミット済み生成物チェックとデプロイ再確認
+
+- run #173（commit `6d3802fface46d85dd2f0d2d6661011bb6f669e6`）で `npm run examples:check` が成功。コミット済み `src/app/examples.js` が生成スクリプトの正規出力と一致することを確認。
+- 続く Build site、Upload Pages artifact、GitHub Pages Deploy もすべて成功。Pages deployment status は success。
+- これにより、一時再生成ステップに依存せず、コミット済み生成物のままビルド・デプロイできる状態を確認した。
+- Node.js 単体テスト（`npm test`）、Playwright テスト（`npm run test:browser`）、Android 実機確認は未実施。
+- この記録更新後の push で新しい workflow run が起動するため、必要に応じて Actions の最新 run を確認する。
+
+---
+
 ## 2026-11-24 — サンプル生成物の正規再生成と復旧デプロイ
 
 - run #168 で一時的な復旧ステップ `npm run examples && npm run examples:check` が成功し、その後 Build site と GitHub Pages Deploy も成功。
