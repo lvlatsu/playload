@@ -3,8 +3,6 @@ import { baseURL } from '../../playwright.config.js';
 import {
   test,
   expect,
-  trackDecodes,
-  decodesSettled,
   watchPolicyViolations,
   policyViolations,
 } from './fixtures.js';
@@ -38,8 +36,8 @@ test('the PLU homepage presents its sample projects and origin link', async ({ p
   await expect(samples).toHaveCount(2);
   await expect(samples.nth(0)).toContainText('GEM SURVIVOR');
   await expect(samples.nth(1)).toContainText('STAR FLOW');
-  await expect(samples.nth(0)).toHaveAttribute('href', /\\/playload\\/app\\/#v1\\./);
-  await expect(samples.nth(1)).toHaveAttribute('href', /\\/playload\\/app\\/#v1\\./);
+  await expect(samples.nth(0)).toHaveAttribute('href', /playload\/app\/#v1\./);
+  await expect(samples.nth(1)).toHaveAttribute('href', /playload\/app\/#v1\./);
   await expect(page.getByRole('link', { name: /PlayLoad Origin/ })).toHaveAttribute(
     'href',
     'https://kitao.dev/playload/',
@@ -52,9 +50,9 @@ test('sample links open the shared app with their source restored', async ({ pag
   const sample = page.locator('.plu-sample').nth(1);
   const href = await sample.getAttribute('href');
   await sample.click();
-  await expect(page).toHaveURL(new RegExp('/playload/app/#v1\\.'));
+  await expect(page).toHaveURL((url) => url.pathname === '/playload/app/' && url.hash.startsWith('#v1.'));
   await expect(page.locator('#editor')).not.toHaveValue('');
-  expect(href).toMatch(/\\/playload\\/app\\/#v1\\./);
+  expect(href).toContain('/playload/app/#v1.');
 });
 
 test('language selection still works when browser storage is unavailable', async ({ page }) => {
