@@ -689,7 +689,10 @@ function syncFormatPosition(entry) {
 }
 
 function updateEditorLines() {
-  editorLineCount = $('editor').value.split('\n').length;
+  const source = $('editor').value;
+  editorLineCount = 1;
+  for (let index = source.indexOf('\n'); index !== -1; index = source.indexOf('\n', index + 1))
+    editorLineCount++;
   editorLineRange = '';
   $('workbench').style.setProperty(
     '--line-number-digits',
