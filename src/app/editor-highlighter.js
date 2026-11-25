@@ -10,7 +10,7 @@ export class EditorHighlighter {
     clearTimeout(this.scheduled);
     if (this.pending) this.stop();
     // Avoid laying out a second full copy of unusually large source text.
-    const plain = source.length > 100000;
+    const plain = source.length > 30000;
     this.editor.classList.toggle('plain', plain);
     this.preview.textContent = plain ? '' : source + '\n';
     if (plain) return;
