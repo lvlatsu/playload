@@ -300,7 +300,9 @@ function run(code, takeFocus = false, focusGeneration = focusRevision, waitForSt
   gameError = '';
   updateError();
   editorErrorLine = null;
-  updateEditorLines();
+  // The input/highlight path already counted the editor's lines. Only refresh
+  // the visible gutter here so starting a large shared source does not scan it twice.
+  syncEditorScroll();
 
   if (touch && takeFocus && focusGeneration === focusRevision) {
     toolsOpen = false;
