@@ -30,83 +30,31 @@ function expectSharedPolicy(header) {
   return policy;
 }
 
-test('image previews wait for the new image and remain closed if loading fails', async ({
-  page,
-}) => {
-  let release;
-  const gate = new Promise((resolve) => (release = resolve));
-  await trackDecodes(page);
-  await page.route('**/info-api@2x.png', async (route) => {
-    await gate;
-    await route.continue();
-  });
+test('the PLU homepage presents its sample projects and origin link', async ({ page }) => {
   await page.goto('/playload/');
-  const links = page.locator('.introduction:visible .screenshots a');
-  const preview = page.getByRole('dialog');
-  await links.nth(0).click();
-  await expect(preview).toBeVisible();
-  await preview.locator('img').click();
-  await expect(preview).not.toBeVisible();
-  const requested = page.waitForRequest('**/info-api@2x.png');
-  await links.nth(1).click();
-  await requested;
-  await expect(preview).not.toBeVisible();
-  release();
-  await expect(preview).toBeVisible();
-  await expect(preview.locator('img')).toHaveJSProperty('complete', true);
-  await expect(preview.locator('img')).toHaveAttribute('src', /info-api@2x\.png$/);
-  await preview.locator('img').click();
-  await page.route('**/info-emoji@2x.png', (route) => route.abort());
-  const failed = page.waitForEvent('requestfailed', (request) =>
-    request.url().endsWith('/info-emoji@2x.png'),
+  await page.getByRole('button', { name: '日本語', exact: true }).click();
+
+  const samples = page.locator('.plu-sample');
+  await expect(samples).toHaveCount(2);
+  await expect(samples.nth(0)).toContainText('GEM SURVIVOR');
+  await expect(samples.nth(1)).toContainText('STAR FLOW');
+  await expect(samples.nth(0)).toHaveAttribute('href', /\\/playload\\/app\\/#v1\\./);
+  await expect(samples.nth(1)).toHaveAttribute('href', /\\/playload\\/app\\/#v1\\./);
+  await expect(page.getByRole('link', { name: /PlayLoad Origin/ })).toHaveAttribute(
+    'href',
+    'https://kitao.dev/playload/',
   );
-  await links.nth(2).click();
-  await failed;
-  await decodesSettled(page);
-  await expect(preview).not.toBeVisible();
 });
 
-test('late image loads cannot replace a newer choice or reopen after Escape', async ({ page }) => {
-  let release;
-  const gate = new Promise((resolve) => (release = resolve));
-  await trackDecodes(page);
-  await page.route('**/info-api@2x.png', async (route) => {
-    await gate;
-    await route.continue();
-  });
+test('sample links open the shared app with their source restored', async ({ page }) => {
   await page.goto('/playload/');
-  const links = page.locator('.introduction:visible .screenshots a');
-  const preview = page.getByRole('dialog');
-  const requested = page.waitForRequest('**/info-api@2x.png');
-  await links.nth(1).click();
-  await requested;
-  await links.nth(2).click();
-  await expect(preview).toBeVisible();
-  const finished = page.waitForEvent('requestfinished', (request) =>
-    request.url().endsWith('/info-api@2x.png'),
-  );
-  release();
-  await finished;
-  await decodesSettled(page);
-  await expect(preview.locator('img')).toHaveAttribute('src', /info-emoji@2x\.png$/);
-  await preview.locator('img').click();
-  let cancelRelease;
-  const cancelGate = new Promise((resolve) => (cancelRelease = resolve));
-  await page.route('**/info-examples@2x.png', async (route) => {
-    await cancelGate;
-    await route.continue();
-  });
-  const cancelRequested = page.waitForRequest('**/info-examples@2x.png');
-  await links.nth(3).click();
-  await cancelRequested;
-  await page.keyboard.press('Escape');
-  const cancelFinished = page.waitForEvent('requestfinished', (request) =>
-    request.url().endsWith('/info-examples@2x.png'),
-  );
-  cancelRelease();
-  await cancelFinished;
-  await decodesSettled(page);
-  await expect(preview).not.toBeVisible();
+  await page.getByRole('button', { name: '日本語', exact: true }).click();
+  const sample = page.locator('.plu-sample').nth(1);
+  const href = await sample.getAttribute('href');
+  await sample.click();
+  await expect(page).toHaveURL(new RegExp('/playload/app/#v1\\.'));
+  await expect(page.locator('#editor')).not.toHaveValue('');
+  expect(href).toMatch(/\\/playload\\/app\\/#v1\\./);
 });
 
 test('language selection still works when browser storage is unavailable', async ({ page }) => {
@@ -210,7 +158,7 @@ test('the introduction and the app run under their own content policies without 
   expect(site['style-src']).toContain('https://fonts.googleapis.com');
   expect(site['script-src']).not.toContain("'unsafe-eval'");
   await page.locator('.language-switch button[data-language="ja"]').click();
-  await page.locator('.introduction:visible .badges').scrollIntoViewIfNeeded();
+  await page.locator('.plu-origin').scrollIntoViewIfNeeded();
   await page.evaluate(() => document.fonts.ready);
   expect(await policyViolations(page)).toEqual([]);
   // Game evaluation belongs to the opaque host; the app only needs its audio worklet blob.
