@@ -705,29 +705,34 @@ function syncEditorScroll() {
   const editor = $('editor'),
     numbers = $('editor-line-numbers'),
     lineHeight = parseFloat(getComputedStyle(editor).lineHeight),
-    // Some native controls accumulate rounding over millions of pixels. In
-    // that case, use matching full text layout to keep the gutter aligned.
+    // Native controls can round their scroll height for sources with millions
+    // of lines. Keep the gutter virtualized and pin its final window at bottom.
     rounded =
       editor.clientHeight > 0 && editor.scrollHeight + lineHeight < editorLineCount * lineHeight,
-    first = rounded ? 0 : Math.max(0, Math.floor(editor.scrollTop / lineHeight) - 1),
-    last = rounded
-      ? editorLineCount
-      : Math.min(editorLineCount, first + Math.ceil(editor.clientHeight / lineHeight) + 3),
+    visible = Math.ceil(editor.clientHeight / lineHeight) + 3,
+    atBottom =
+      editor.scrollTop + editor.clientHeight >= editor.scrollHeight - lineHeight,
+    first = rounded && atBottom
+      ? Math.max(0, editorLineCount - visible)
+      : Math.max(0, Math.floor(editor.scrollTop / lineHeight) - 1),
+    last = Math.min(editorLineCount, first + visible),
     range = `${first}:${last}:${editorErrorLine}`;
-  // Normally only visible line numbers need layout. The textarea always keeps
-  // the complete editable text, including highly compressed blank-line runs.
+  // Render only the visible window, even when the browser rounds a huge
+  // textarea's scroll height. The textarea retains the complete editable text.
   if (range !== editorLineRange) {
     numbers.innerHTML = Array.from({ length: last - first }, (_, i) => {
       const line = first + i + 1;
       return line === editorErrorLine
         ? `<span class="editor-line-error">${line}</span>`
         : String(line);
-    }).join('\n');
+    }).join('\\n');
     editorLineRange = range;
   }
   $('editor-highlight').scrollTop = editor.scrollTop;
   $('editor-highlight').scrollLeft = editor.scrollLeft;
-  numbers.style.transform = `translateY(${first * lineHeight - editor.scrollTop}px)`;
+  numbers.style.transform = rounded && atBottom
+    ? `translateY(${Math.max(0, editor.clientHeight - (last - first) * lineHeight)}px)`
+    : `translateY(${first * lineHeight - editor.scrollTop}px)`;
 }
 
 $('editor').onscroll = syncEditorScroll;
