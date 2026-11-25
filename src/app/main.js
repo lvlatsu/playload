@@ -725,7 +725,7 @@ function syncEditorScroll() {
       return line === editorErrorLine
         ? `<span class="editor-line-error">${line}</span>`
         : String(line);
-    }).join('\\n');
+    }).join('\n');
     editorLineRange = range;
   }
   $('editor-highlight').scrollTop = editor.scrollTop;
