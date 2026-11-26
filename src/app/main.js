@@ -300,7 +300,6 @@ function run(code, takeFocus = false, focusGeneration = focusRevision, waitForSt
   playback.sync();
 
   pendingSource = code;
-  scheduleURL(0);
   gameError = '';
   updateError();
   editorErrorLine = null;
@@ -644,14 +643,12 @@ function renderSizeSnapshot(delta = null) {
 
 $('size-recalculate').onclick = () => {
   if (!sizeReady || !latestSize) return;
-  const next = captureSizeSnapshot(latestSize),
-    delta = sizeSnapshot ? next.total - sizeSnapshot.total : 0;
-  sizeSnapshot = next;
-  renderSizeSnapshot(delta);
-  $('size-dirty').hidden = true;
+  sizeReady = false;
+  controls();
+  scheduleURL(0, true);
 };
 
-function scheduleURL(delay = 250) {
+function scheduleURL(delay = 250, updateSnapshot = false) {
   clearTimeout(urlTimer);
   const version = ++urlRevision,
     code = $('editor').value,
@@ -674,9 +671,12 @@ function scheduleURL(delay = 250) {
         total: url.href.length,
         xCount: url.href.length + url.protocol.length + 2,
       };
-      if (!sizeSnapshot) {
-        sizeSnapshot = captureSizeSnapshot(latestSize);
-        renderSizeSnapshot();
+      if (!sizeSnapshot || updateSnapshot) {
+        const next = captureSizeSnapshot(latestSize),
+          delta = sizeSnapshot ? next.total - sizeSnapshot.total : null;
+        sizeSnapshot = next;
+        renderSizeSnapshot(delta);
+        $('size-dirty').hidden = true;
       }
       sizeReady = true;
       $('size').title =
@@ -796,7 +796,7 @@ function changed() {
   if (sizeSnapshot) $('size-dirty').hidden = false;
   editorErrorLine = null;
   highlightEditor();
-  scheduleURL();
+  if (sizeSnapshot) $('size-dirty').hidden = false;
   $('error-line').disabled = true;
   controls();
 }
@@ -1647,6 +1647,7 @@ if (initialHash) {
       editorHistory.reset();
       highlightEditor();
       run(code, view === 'play', initialFocus, true);
+      scheduleURL(0);
     })
     .catch((error) => {
       if (initialEdit !== editRevision) return;
@@ -1655,4 +1656,7 @@ if (initialHash) {
       showPlayer();
       if (view === 'play' && initialFocus === focusRevision) focusGame();
     });
-} else run(starter, true, focusRevision, true);
+} else {
+  run(starter, true, focusRevision, true);
+  scheduleURL(0);
+}
