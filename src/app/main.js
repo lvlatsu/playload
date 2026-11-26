@@ -503,6 +503,8 @@ $('pause').onclick = () => {
 };
 $('tools-toggle').onclick = () => {
   toolsOpen = !toolsOpen;
+  if (toolsOpen)
+    $('size-user').textContent = Array.from($('editor').value).length.toLocaleString() + '文字';
   release();
   audio.unlock();
   playback.sync();
@@ -652,7 +654,7 @@ function scheduleURL(delay = 250, updateSnapshot = false) {
   clearTimeout(urlTimer);
   const version = ++urlRevision,
     code = $('editor').value,
-    writeURL = !!initialHash || editRevision > 0 || code !== starter;
+    writeURL = updateSnapshot || !!initialHash || editRevision > 0 || code !== starter;
   const title = writeURL ? gameTitle(code) : null;
   document.title = title ? `${title} — Playload` : 'Playload';
   urlTimer = setTimeout(async () => {
@@ -792,11 +794,9 @@ $('editor').onscroll = syncEditorScroll;
 
 function changed() {
   editRevision++;
-  sizeReady = false;
   if (sizeSnapshot) $('size-dirty').hidden = false;
   editorErrorLine = null;
   highlightEditor();
-  if (sizeSnapshot) $('size-dirty').hidden = false;
   $('error-line').disabled = true;
   controls();
 }
