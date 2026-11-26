@@ -650,17 +650,17 @@ $('size-recalculate').onclick = () => {
   scheduleURL(0, true);
 };
 
-function scheduleURL(delay = 250, updateSnapshot = false) {
+function scheduleURL(delay = 250, updateSnapshot = false, initial = false) {
   clearTimeout(urlTimer);
   const version = ++urlRevision,
     code = $('editor').value,
-    writeURL = updateSnapshot || !!initialHash || editRevision > 0 || code !== starter;
+    writeURL = !initial && (updateSnapshot || !!initialHash || editRevision > 0 || code !== starter);
   const title = writeURL ? gameTitle(code) : null;
   document.title = title ? `${title} — Playload` : 'Playload';
   urlTimer = setTimeout(async () => {
     try {
       const encoded = await encode(code);
-      if (version !== urlRevision || code !== $('editor').value) return;
+      if (version !== urlRevision || (updateSnapshot && code !== $('editor').value)) return;
       const original = initialHash && editRevision === 0 && code === loadedSource,
         url = new URL(gameURL(location.href, original ? initialHash : encoded.hash));
       payload = encoded;
@@ -1652,7 +1652,7 @@ if (initialHash) {
       editorHistory.reset();
       highlightEditor();
       run(code, view === 'play', initialFocus, true);
-      scheduleURL(0);
+      scheduleURL(0, false, true);
     })
     .catch((error) => {
       if (initialEdit !== editRevision) return;
@@ -1663,5 +1663,5 @@ if (initialHash) {
     });
 } else {
   run(starter, true, focusRevision, true);
-  scheduleURL(0);
+  scheduleURL(0, false, true);
 }
