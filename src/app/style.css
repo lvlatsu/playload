@@ -207,21 +207,50 @@ header p {
 #size {
   position: relative;
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  height: 36px;
-  padding: 6px 0;
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 400;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  min-height: 36px;
+  padding: 4px 0;
+  font-size: 12px;
+  line-height: 18px;
   white-space: nowrap;
-  color: var(--active);
 }
 
-#size .size-label,
-#size .size-limit {
-  font-size: 12px;
+.size-metrics {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.size-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+#size .size-label {
   color: var(--muted);
+}
+
+#size .size-item > span:last-child,
+#size #size-delta {
+  color: var(--active);
+  font-variant-numeric: tabular-nums;
+}
+
+#size #size-dirty {
+  color: #d77355;
+  font-size: 11px;
+}
+
+#size-recalculate {
+  width: auto;
+  min-width: 72px;
+  height: 30px;
+  padding: 2px 8px;
+  font-size: 11px;
 }
 
 #workspace-toolbar {
@@ -1580,10 +1609,16 @@ body[data-touch='true'] #workspace-toolbar button {
 body[data-touch='true'] #size {
   grid-column: 1 / -1;
   justify-content: center;
-  height: 28px;
-  padding: 0;
+  height: auto;
+  padding: 4px 0;
   border: 0;
-  font-size: 16px;
+  font-size: 12px;
+}
+
+body[data-touch='true'] #size-recalculate {
+  width: auto;
+  min-width: 72px;
+  height: 30px;
 }
 
 body[data-touch='true'][data-editor-closed='true'] #play {
