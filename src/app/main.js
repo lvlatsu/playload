@@ -625,6 +625,7 @@ function captureSizeSnapshot(size) {
     user: Array.from(size.source).length,
     compressed: size.compressed,
     total: size.total,
+    xCount: size.xCount,
   };
 }
 
@@ -633,7 +634,8 @@ function renderSizeSnapshot(delta = null) {
   $('size-expense').textContent = sizeSnapshot.expense.toLocaleString() + '文字';
   $('size-user').textContent = sizeSnapshot.user.toLocaleString() + '文字';
   $('size-compressed').textContent = sizeSnapshot.compressed.toLocaleString() + '文字';
-  $('size-total').textContent = sizeSnapshot.total.toLocaleString() + ' / 4096文字';
+  $('size-total').textContent = sizeSnapshot.total.toLocaleString() + '文字';
+  $('size-x-count').textContent = sizeSnapshot.xCount.toLocaleString() + ' / 4096文字';
   $('size-delta').textContent =
     delta === null
       ? '前回比 —'
@@ -670,6 +672,7 @@ function scheduleURL(delay = 250) {
         source: code,
         compressed: compressedChars,
         total: url.href.length,
+        xCount: url.href.length + url.protocol.length + 2,
       };
       if (!sizeSnapshot) {
         sizeSnapshot = captureSizeSnapshot(latestSize);
