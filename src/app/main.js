@@ -794,6 +794,11 @@ $('editor').onscroll = syncEditorScroll;
 
 function changed() {
   editRevision++;
+  if (latestSize) {
+    clearTimeout(urlTimer);
+    urlRevision++;
+    sizeReady = true;
+  }
   if (sizeSnapshot) $('size-dirty').hidden = false;
   editorErrorLine = null;
   highlightEditor();
