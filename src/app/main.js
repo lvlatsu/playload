@@ -664,7 +664,6 @@ function scheduleURL(delay = 250) {
         renderSizeSnapshot();
       }
       sizeReady = true;
-      if (!sizeSnapshot) $('size-dirty').hidden = true;
       $('size').title =
         encoded.bytes + ' compressed bytes · ' + url.href.length + ' URL characters';
       urlError = '';
