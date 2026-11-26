@@ -68,6 +68,9 @@ let pendingSource = '',
 let view = 'play',
   reference = 'about',
   payload,
+  sizeSnapshot = null,
+  latestSize = null,
+  sizeReady = false,
   columns = 12;
 let category = 'emoji';
 let editRevision = 0,
@@ -205,6 +208,7 @@ function controls() {
   $('tools-toggle').setAttribute('aria-expanded', String(toolsOpen));
   $('start-game').hidden = !playback.awaitingStart;
   $('size').hidden = !payload;
+  $('size-recalculate').disabled = !sizeReady;
   $('pause').disabled = !playback.running || playback.awaitingStart;
   $('screenshot').disabled = !playback.running;
   $('run').disabled = reading;
@@ -615,6 +619,24 @@ function gameTitle(code) {
 let urlTimer,
   urlRevision = 0;
 
+function renderSizeSnapshot(delta = null) {
+  if (!sizeSnapshot) return;
+  $('size-expense').textContent = sizeSnapshot.expense.toLocaleString() + '文字';
+  $('size-user').textContent = sizeSnapshot.user.toLocaleString() + '文字';
+  $('size-compressed').textContent = sizeSnapshot.compressed.toLocaleString() + '文字';
+  $('size-total').textContent = sizeSnapshot.total.toLocaleString() + ' / 4096文字';
+  $('size-delta').textContent =
+    delta === null ? '前回比 —' : '前回比 ' + (delta > 0 ? '+' : '') + delta.toLocaleString() + '文字';
+}
+
+$('size-recalculate').onclick = () => {
+  if (!sizeReady || !latestSize) return;
+  const delta = sizeSnapshot ? latestSize.total - sizeSnapshot.total : 0;
+  sizeSnapshot = { ...latestSize };
+  renderSizeSnapshot(delta);
+  $('size-dirty').hidden = true;
+};
+
 function scheduleURL(delay = 250) {
   clearTimeout(urlTimer);
   const version = ++urlRevision,
@@ -629,8 +651,22 @@ function scheduleURL(delay = 250) {
       const original = initialHash && editRevision === 0 && code === loadedSource,
         url = new URL(gameURL(location.href, original ? initialHash : encoded.hash));
       payload = encoded;
-      $('size-current').textContent = formatPayloadSize(encoded.bytes);
-      $('size').title = encoded.bytes + ' bytes · ' + url.href.length + ' URL characters';
+      const hashDot = url.hash.indexOf('.'),
+        compressedChars = hashDot < 0 ? Math.max(0, url.hash.length - 1) : url.hash.length - hashDot - 1;
+      latestSize = {
+        expense: url.href.length - compressedChars,
+        user: Array.from(code).length,
+        compressed: compressedChars,
+        total: url.href.length,
+      };
+      if (!sizeSnapshot) {
+        sizeSnapshot = { ...latestSize };
+        renderSizeSnapshot();
+      }
+      sizeReady = true;
+      if (!sizeSnapshot) $('size-dirty').hidden = true;
+      $('size').title =
+        encoded.bytes + ' compressed bytes · ' + url.href.length + ' URL characters';
       urlError = '';
       if (encoded.bytes > MAX_COMPRESSED_BYTES || !fitsURLLimit(url.href)) {
         // Older links remain playable and keep their source until the user edits it.
@@ -648,6 +684,7 @@ function scheduleURL(delay = 250) {
       const url = new URL(gameURL(location.href, ''));
       if (writeURL) history.replaceState(null, '', url);
       payload = null;
+      sizeReady = false;
       urlError = error.message;
       updateError();
       controls();
@@ -741,6 +778,8 @@ $('editor').onscroll = syncEditorScroll;
 
 function changed() {
   editRevision++;
+  sizeReady = false;
+  if (sizeSnapshot) $('size-dirty').hidden = false;
   editorErrorLine = null;
   highlightEditor();
   scheduleURL();
