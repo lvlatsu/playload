@@ -619,6 +619,15 @@ function gameTitle(code) {
 let urlTimer,
   urlRevision = 0;
 
+function captureSizeSnapshot(size) {
+  return {
+    expense: size.expense,
+    user: Array.from(size.source).length,
+    compressed: size.compressed,
+    total: size.total,
+  };
+}
+
 function renderSizeSnapshot(delta = null) {
   if (!sizeSnapshot) return;
   $('size-expense').textContent = sizeSnapshot.expense.toLocaleString() + '文字';
@@ -626,13 +635,16 @@ function renderSizeSnapshot(delta = null) {
   $('size-compressed').textContent = sizeSnapshot.compressed.toLocaleString() + '文字';
   $('size-total').textContent = sizeSnapshot.total.toLocaleString() + ' / 4096文字';
   $('size-delta').textContent =
-    delta === null ? '前回比 —' : '前回比 ' + (delta > 0 ? '+' : '') + delta.toLocaleString() + '文字';
+    delta === null
+      ? '前回比 —'
+      : '前回比 ' + (delta > 0 ? '+' : '') + delta.toLocaleString() + '文字';
 }
 
 $('size-recalculate').onclick = () => {
   if (!sizeReady || !latestSize) return;
-  const delta = sizeSnapshot ? latestSize.total - sizeSnapshot.total : 0;
-  sizeSnapshot = { ...latestSize };
+  const next = captureSizeSnapshot(latestSize),
+    delta = sizeSnapshot ? next.total - sizeSnapshot.total : 0;
+  sizeSnapshot = next;
   renderSizeSnapshot(delta);
   $('size-dirty').hidden = true;
 };
@@ -655,12 +667,12 @@ function scheduleURL(delay = 250) {
         compressedChars = hashDot < 0 ? Math.max(0, url.hash.length - 1) : url.hash.length - hashDot - 1;
       latestSize = {
         expense: url.href.length - compressedChars,
-        user: Array.from(code).length,
+        source: code,
         compressed: compressedChars,
         total: url.href.length,
       };
       if (!sizeSnapshot) {
-        sizeSnapshot = { ...latestSize };
+        sizeSnapshot = captureSizeSnapshot(latestSize);
         renderSizeSnapshot();
       }
       sizeReady = true;
